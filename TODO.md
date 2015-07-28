@@ -6,7 +6,7 @@
   - [X] Mouse Up
   - [X] Click
   - [ ] Mouse Events should piggy-back on the render queue if possible
-- [-] Support removing objects when they're destroyed. (SVG only)
+- [X] Support removing objects when they're destroyed.
 - [ ] Support resorting — maybe destroy & recreate group?
 - [ ] Create Various Shape Renderables
   - [ ] Rectangle
