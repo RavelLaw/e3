@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/e3-group';
+import Group from '../utils/shadow/group';
 import e3AnimatedChild from '../mixins/e3-animated-child';
 const {get, set, computed} = Ember;
 
@@ -8,7 +9,7 @@ const {get, set, computed} = Ember;
  Then, we don't need to actually render the groups themselves!
  */
 export default Ember.Component.extend(e3AnimatedChild, {
-  renderableName: 'group',
+  shadowType: 'group',
   layout: layout,
 
   enterState: {
@@ -25,14 +26,22 @@ export default Ember.Component.extend(e3AnimatedChild, {
   matrix: null,
 
   /*
+   Generate the shadow object.
+   */
+  generateShadowObject(contextType, attrs) {
+    let shadow = new Group(this, 'group', contextType, attrs);
+    set(this, 'shadow', shadow);
+  },
+
+  /*
    Since this is both a context and a child, override the behaviors.
    */
   register(child) {
-    get(this, 'renderable').add(get(child, 'renderable'));
+    get(this, 'shadow').add(get(child, 'shadow'));
   },
 
   unregister(child) {
-    get(this, 'renderable').remove(get(child, 'renderable'));
+    get(this, 'shadow').remove(get(child, 'shadow'));
   },
 
   addToQueue(callback) {

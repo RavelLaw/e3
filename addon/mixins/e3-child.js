@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Renderable from '../utils/shadow/renderable';
 const {on, get, set} = Ember;
 
 export default Ember.Mixin.create({
@@ -8,14 +9,14 @@ export default Ember.Mixin.create({
   tagName: '',
 
   /*
-    The name of the class to lookup.
+    The name of the shadow type to lookup.
    */
-  renderableName: null,
+  shadowType: null,
 
   /*
-   The renderable object that can be added.
+   The shadow object that can be added.
    */
-  renderable: null,
+  shadow: null,
 
   /*
    Add the public attributes for this child
@@ -38,10 +39,25 @@ export default Ember.Mixin.create({
     this.getAttr('context').register(this);
   },
 
-  init() {
-    this._super();
-    let renderableName = get(this, 'renderableName');
-    let renderable = this.container.lookupFactory('renderable:'+renderableName).create();
-    set(this, 'renderable', renderable);
+  /*
+   Generate the shadow object.
+   */
+  generateShadowObject(contextType, attrs) {
+    let shadow = new Renderable(this, get(this, 'shadowType'), contextType, attrs);
+    set(this, 'shadow', shadow);
+  },
+
+  /*
+   Update the attributes on the shadow object.
+   */
+  updateShadowObject(attrs) {
+    get(this, 'shadow').setAttributes(attrs);
+  },
+
+  /*
+   Destroy the shadow object.
+   */
+  unregister() {
+    this.getAttr('context').unregister(this);
   }
 });

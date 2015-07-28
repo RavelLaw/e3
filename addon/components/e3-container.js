@@ -2,9 +2,12 @@ import Ember from 'ember';
 import layout from '../templates/components/e3-container';
 import renderQueue from '../mixins/e3-render-queue';
 import Group from '../utils/shadow/group';
+import ShadowEvent from '../utils/shadow/event';
 
 const {
-  computed, on, set, get, A:arr
+  computed, on, set, get,
+  A:arr,
+  tryInvoke
 } = Ember;
 
 export default Ember.Component.extend(renderQueue, {
@@ -49,7 +52,7 @@ export default Ember.Component.extend(renderQueue, {
    */
   register(child) {
     get(this, 'children').pushObject(child);
-    get(this, 'stage').add(get(child, 'renderable'));
+    get(this, 'stage').add(get(child, 'shadow'));
   },
 
   /*
@@ -57,7 +60,7 @@ export default Ember.Component.extend(renderQueue, {
    */
   unregister(child) {
     get(this, 'children').removeObject(child);
-    get(this, 'stage').remove(child);
+    get(this, 'stage').remove(get(child, 'shadow'));
   },
 
   /*
@@ -81,11 +84,58 @@ export default Ember.Component.extend(renderQueue, {
     this.renderStage();
   }),
 
-  renderStage() {
+  /*
+   Handle mouse move events
+   */
+  mouseMove(e) {
+    let event = new ShadowEvent(e);
+    this.renderStage(event);
+  },
+
+  mouseDown(e) {
+    let event = new ShadowEvent(e);
+    this.renderStage(event);
+  },
+
+  mouseUp(e) {
+    let event = new ShadowEvent(e);
+    this.renderStage(event);
+  },
+
+  mouseOut(e) {
+    let event = new ShadowEvent(e);
+    this.renderStage(event);
+  },
+
+  /*
+   Track the last event that happened so we can simulate mouse out events.
+   */
+  _previousEvent: null,
+
+  /*
+   Take the current state and render it to the stage.
+   */
+  renderStage(event = null) {
+    let prevEvent = get(this, '_previousEvent');
+
     get(this, 'stage').render(get(this, 'element'), this.getAttr('type'), {
       width: this.getAttr('width'),
       height: this.getAttr('height')
-    });
+    }, null, event);
+
+    if(event) {
+      // Determine which events took place and dispatch them.
+      let events = event.getEvents(prevEvent);
+
+      // Dispatch the events.
+      events.forEach(ev => {
+        let {type, target} = ev;
+        tryInvoke(target.component, type, [event]);
+      });
+
+      // Then, set this event as the previous one.
+      set(this, '_previousEvent', event);
+    }
   },
 
   /*
@@ -93,7 +143,7 @@ export default Ember.Component.extend(renderQueue, {
    */
   setupShadowElement: on('init', function() {
     /* globals Two */
-    let stage = new Group('stage', this.getAttr('type'));
+    let stage = new Group(this, 'stage', this.getAttr('type'));
     set(this, 'stage', stage);
   })
 });

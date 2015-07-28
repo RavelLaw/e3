@@ -85,9 +85,8 @@ export default Ember.Mixin.create(e3Child, {
    */
   didInitAttrs() {
     let state = this.generateState(get(this, 'enterState'));
-    let renderable = get(this, 'renderable');
-    set(this, '_previousState', state);
-    renderable._generateShadowObject(state, this.getType());
+    this._previousState = state;
+    this.generateShadowObject(this.getType(), state);
     this.registerToContext();
   },
 
@@ -99,13 +98,33 @@ export default Ember.Mixin.create(e3Child, {
   },
 
   /*
-   Whenever the did render hook runs, start an animation to update the renderable.
+   Whenever the did render hook runs, start an animation to update the shadow object.
    TODO: Make sure we handle animation interruptions.
    */
   didRender() {
     let resultState = this.generateState(get(this, 'activeState'));
+    this.renderState(resultState);
+  },
+
+  /*
+   Render this out when it's going to be destroyed.
+   */
+  willDestroyElement() {
+    let resultState = this.generateState(get(this, 'exitState'));
+    let shadow = get(this, 'shadow');
+    let context = this.getAttr('context');
+
+    this.renderState(resultState, () => {
+      context.unregister(this);
+      shadow.destroy();
+    });
+  },
+
+  /*
+   Render State
+   */
+  renderState(resultState, finishedCallback) {
     let startState = get(this, '_previousState');
-    let renderable = get(this, 'renderable');
     let animation = this.generateState(get(this, 'animation'));
     var start = null;
 
@@ -125,13 +144,20 @@ export default Ember.Mixin.create(e3Child, {
       let currentState = interpolate(startState, resultState, easePercent);
 
       // Save this current state.
-      set(this, '_previousState', currentState);
+      this._previousState = currentState;
 
-      // Then, lastly, apply the attributes to the renderable.
-      renderable._update(currentState);
+      // Then, lastly, apply the attributes to the shadow object.
+      this.updateShadowObject(currentState);
 
       // If we're done, let the animation queue know.
-      return percentComplete >= 1;
+      if(percentComplete >= 1) {
+        if(finishedCallback) {
+          finishedCallback(this);
+        }
+        return true;
+      } else {
+        return false;
+      }
     });
   },
 

@@ -1,9 +1,13 @@
 {{outlet}}
-
-{{#e3-container type='canvas' height=400 width=800 as |ctx|}}
+<button {{action 'addThird'}}>Add Third</button>
+<br><br><br>
+{{#e3-container type='svg' height=400 width=800 as |ctx|}}
   {{#e3-group context=ctx as |groupCtx|}}
-    {{e3-circle context=groupCtx zindex=1 x=100}}
-    {{e3-circle context=groupCtx zindex=1 x=200}}
-    {{e3-circle context=groupCtx zindex=1 x=300}}
+    {{e3-circle context=groupCtx x=100}}
+    {{e3-circle context=groupCtx x=200}}
+    {{#if showThird}}
+      {{e3-circle context=groupCtx x=300}}
+    {{/if}}
+    {{!custom-shape context=groupCtx x=400}}
   {{/e3-group}}
 {{/e3-container}}

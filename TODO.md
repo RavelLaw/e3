@@ -1,0 +1,31 @@
+- [-] Support Mouse Events
+  - [X] Mouse Enter
+  - [X] Mouse Leave
+  - [X] Mouse Move
+  - [X] Mouse Down
+  - [X] Mouse Up
+  - [X] Click
+  - [ ] Mouse Events should piggy-back on the render queue if possible
+- [-] Support removing objects when they're destroyed. (SVG only)
+- [ ] Support resorting — maybe destroy & recreate group?
+- [ ] Create Various Shape Renderables
+  - [ ] Rectangle
+  - [ ] Vertical Line
+  - [ ] Horizontal Line
+  - [ ] Text
+  - [ ] Path*
+  - [ ] Polygon
+- [ ] Create Array Helpers
+  - [ ] Extent (Include "padding" option)
+  - [ ] Unique
+- [ ] Create Scales (Feature Parity with D3)
+  - [ ] Linear Scale
+  - [ ] Ordinal Scale
+  - [ ] Bind Scale to Renderable Property Helper
+- [ ] Create Layout Engines
+  - [ ] Force Direction
+  - [ ] Collision Detection
+- [ ] Create Stacked Groups (provides previous & next data)
+  - [ ] Stacked Renderable Types (Stacked Bar, Pie, Stacked Area)
+- [ ] Transition Enter State with Previous Scale
+  - [ ] How to handle Ordinal Scales where value didn't exist previously? (closest index?)

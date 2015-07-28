@@ -27,6 +27,15 @@ export default {
 
   stage(parentContext, selfContext, attrs) {
     return parentContext;
+  },
+
+  checkEvent(selfContext, event) {
+    let originalTarget = event.originalEvent.target;
+    return selfContext === originalTarget;
+  },
+
+  destroy(selfContext) {
+    selfContext.parentNode.removeChild(selfContext);
   }
 }
 
