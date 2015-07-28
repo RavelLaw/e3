@@ -7,7 +7,7 @@
   - [X] Click
   - [ ] Mouse Events should piggy-back on the render queue if possible
 - [X] Support removing objects when they're destroyed.
-- [ ] Support resorting — maybe destroy & recreate group?
+- [ ] Support sort order on #each — maybe destroy & recreate group?
 - [ ] Create Various Shape Renderables
   - [ ] Rectangle
   - [ ] Vertical Line
@@ -15,12 +15,13 @@
   - [ ] Text
   - [ ] Path*
   - [ ] Polygon
-- [ ] Create Array Helpers
-  - [ ] Extent (Include "padding" option)
-  - [ ] Unique
+- [X] Create Array Helpers
+  - [X] Extent (Include "padding" option)
+  - [X] Unique
 - [ ] Create Scales (Feature Parity with D3)
   - [ ] Linear Scale
   - [ ] Ordinal Scale
+  - [ ] Date Scale
   - [ ] Bind Scale to Renderable Property Helper
 - [ ] Create Layout Engines
   - [ ] Force Direction
