@@ -5,7 +5,12 @@ const {keys} = Object;
  Given two hashes with the same properties and a progress percent, return a new
  hash that represents the values at that progress point.
 
- For now, we're only supporting numbers.
+ For now, we're only supporting numbers. This needs lots of work to support other types of
+ interpolate-able values.
+ [ ] Arrays
+ [ ] Colors (rgb, hex, hsl?)
+ [ ] Custom Interpolators?
+ [ ]
  */
 export default function interpolate(hashA, hashB, percent = 0) {
   var resHash = {};

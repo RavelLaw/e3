@@ -1,3 +1,7 @@
+/*
+ * Lovingly borrowed some of this from two.js:
+ * https://github.com/jonobr1/two.js
+ */
 const {cos, sin} = Math;
 
 export function multiply(A, B) {
