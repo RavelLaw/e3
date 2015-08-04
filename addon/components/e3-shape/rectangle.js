@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import e3AnimatedChild from '../mixins/e3-animated-child';
+import e3AnimatedChild from '../../mixins/e3-animated-child';
 
 export default Ember.Component.extend(e3AnimatedChild, {
-  shadowType: 'circle',
+  shadowType: 'rectangle',
 
   enterState: {
     x: 0,
@@ -17,11 +17,10 @@ export default Ember.Component.extend(e3AnimatedChild, {
   activeState: {
     x: 100,
     y: 100,
-    radius: 50,
-    fill: 'red'
-  },
-
-  drag(e) {
-    console.log('drag', e.dx, e.dy);
+    width: 50,
+    height: 50,
+    fill: 'red',
+    'stroke-width': 5,
+    'stroke': 'black'
   }
 });

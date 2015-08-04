@@ -1,31 +1,39 @@
 import {toArray} from '../matrix-math';
+import ATTRIBUTE_MAP from './svg-attribute-map';
 const {keys} = Object;
-const ATTRIBUTE_MAP = {
-  'radius': 'r',
-  'x': 'cx',
-  'y': 'cy'
-};
 
 export default {
   group(parentContext, selfContext, attrs, matrix) {
-    if(!selfContext) {
-      selfContext = generateSVGObject(parentContext, 'g');
-    }
-    renderAttributes(selfContext, {
+    selfContext = preRender(selfContext, parentContext, 'g');
+    renderAttributes('group', selfContext, {
       transform: `matrix(${toArray(matrix)})`
     });
     return selfContext;
   },
 
   circle(parentContext, selfContext, attrs) {
-    if(!selfContext) {
-      selfContext = generateSVGObject(parentContext, 'circle');
-    }
-    renderAttributes(selfContext, attrs);
+    selfContext = preRender(selfContext, parentContext, 'circle');
+    renderAttributes('circle', selfContext, attrs);
     return selfContext;
   },
 
-  stage(parentContext, selfContext, attrs) {
+  rectangle(parentContext, selfContext, attrs) {
+    selfContext = preRender(selfContext, parentContext, 'rect');
+    renderAttributes('rect', selfContext, attrs);
+    return selfContext;
+  },
+
+  line(parentContext, selfContext, attrs) {
+    selfContext = preRender(selfContext, parentContext, 'line');
+    attrs.x1 = attrs.x1 === undefined ? attrs.x : attrs.x1;
+    attrs.x2 = attrs.x2 === undefined ? attrs.x : attrs.x2;
+    attrs.y1 = attrs.y1 === undefined ? attrs.y : attrs.y1;
+    attrs.y2 = attrs.y2 === undefined ? attrs.y : attrs.y2;
+    renderAttributes('line', selfContext, attrs);
+    return selfContext;
+  },
+
+  stage(parentContext/*, selfContext, attrs*/) {
     return parentContext;
   },
 
@@ -37,6 +45,16 @@ export default {
   destroy(selfContext) {
     selfContext.parentNode.removeChild(selfContext);
   }
+};
+
+/*
+  pre render
+ */
+function preRender(selfContext, parentContext, type) {
+  if(selfContext) {
+    return selfContext;
+  }
+  return generateSVGObject(parentContext, type);
 }
 
 /*
@@ -53,10 +71,10 @@ function generateSVGObject(parent, type) {
 /*
  Render the attributes provided in the hash to the node.
  */
-function renderAttributes(node, attrs) {
-  let namepsace = node.namespaceURI;
+function renderAttributes(ns, node, attrs) {
+  let map = ATTRIBUTE_MAP[ns] || {};
   keys(attrs).forEach(key => {
-    let attrKey = ATTRIBUTE_MAP[key] || key;
+    let attrKey = map[key] || key;
     node.setAttribute(attrKey, attrs[key]);
   });
 }

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
 import interpolate from '../utils/e3-interpolate';
-const {get, set, merge, copy} = Ember;
+const {get, set, merge, copy, isEmpty, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
 const {max, min} = Math;
 
@@ -50,44 +50,67 @@ export default Ember.Mixin.create(e3Child, {
   animationState: null,
 
   /*
+   Track the status of this renderable.
+   */
+  hasRendered: false,
+
+  /*
    Given the data and a state object, which is made up of primitives or functions,
    output the result object with all primitive values.
 
    Also, if there was an attribute set with the same name directly, use that instead.
    */
-  generateState(state) {
+  generateState(stateName) {
+    let state = get(this, stateName);
     let data = this.getAttr('data');
-    let zindex = this.getAttr('zindex');
     let attrs = this.get('attrs');
     let resultState = {};
+    let isValidState = true;
 
     // Add the current index if there is one.
-    resultState.zindex = this.getAttr('zindex');
+    // resultState.zindex = this.getAttr('zindex');
 
     // For each of the keys in the state, either just use
     // the value if it's not a function; or apply the data to the function.
     if(state) {
-      keys(state).forEach(key => {
-        let val = attrs.hasOwnProperty(key) ? this.getAttr(key) : get(state, key);
+      keys(state).forEach((key, index) => {
+        let val = attrs.hasOwnProperty(key) && stateName === 'activeState' ? this.getAttr(key) : get(state, key);
         if(typeof val === 'function') {
           resultState[key] = val.call(this, data, index);
+        } else if(isEmpty(val)) {
+          // Fail this state if any of the required values are empty.
+          isValidState = false;
         } else {
           resultState[key] = val;
         }
       });
     }
 
-    return resultState;
+    if(isValidState) {
+      return resultState;
+    } else {
+      return false;
+    }
   },
 
   /*
    Regsiter this state to the context/stage once we've received attributes for the first time.
    */
   didInitAttrs() {
-    let state = this.generateState(get(this, 'enterState'));
-    this._previousState = state;
-    this.generateShadowObject(this.getType(), state);
-    this.registerToContext();
+    this.setupInitialState();
+  },
+
+  /*
+   Setup the intial state
+   */
+  setupInitialState() {
+    let state = this.generateState('enterState');
+    if(state) {
+      this._previousState = state;
+      this.generateShadowObject(this.getType(), state);
+      this.registerToContext();
+      set(this, 'hasRendered', true);
+    }
   },
 
   /*
@@ -101,16 +124,30 @@ export default Ember.Mixin.create(e3Child, {
    Whenever the did render hook runs, start an animation to update the shadow object.
    TODO: Make sure we handle animation interruptions.
    */
-  didRender() {
-    let resultState = this.generateState(get(this, 'activeState'));
-    this.renderState(resultState);
+  didUpdateAttrs() {
+    if(!get(this, 'hasRendered')) {
+      this.setupInitialState();
+    }
+
+    scheduleOnce('afterRender', this, 'doRenderNewState');
+  },
+
+  /*
+   Make sure we only attempt a render once in a run loop.
+   */
+  doRenderNewState() {
+    let resultState = this.generateState('activeState');
+    // Only render if the state is a truthy value.
+    if(resultState) {
+      this.renderState(resultState);
+    }
   },
 
   /*
    Render this out when it's going to be destroyed.
    */
   willDestroyElement() {
-    let resultState = this.generateState(get(this, 'exitState'));
+    let resultState = this.generateState('exitState');
     let shadow = get(this, 'shadow');
     let context = this.getAttr('context');
 
@@ -125,7 +162,7 @@ export default Ember.Mixin.create(e3Child, {
    */
   renderState(resultState, finishedCallback) {
     let startState = get(this, '_previousState');
-    let animation = this.generateState(get(this, 'animation'));
+    let animation = this.generateState('animation');
     var start = null;
 
     // Start an animation.
@@ -188,7 +225,7 @@ export default Ember.Mixin.create(e3Child, {
 /*
  Calculate the percentage complete based on the times/delays.
  */
-function getPercentComplete(startTime, currentTime, totalDuration = 200, delay = 400) {
+function getPercentComplete(startTime, currentTime, totalDuration = 200, delay = 0) {
   let currentDuration = currentTime - delay - startTime;
 
   // This should only happen if there's a delay.

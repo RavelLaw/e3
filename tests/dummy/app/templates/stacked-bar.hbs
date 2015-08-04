@@ -1,0 +1,23 @@
+<button {{action 'add'}}>Add</button>
+<button {{action 'clear'}}>Clear</button>
+<br><br>
+{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
+  <metadata>
+    {{e3-scale/linear ctx 'x'
+      domain=(e3-extent model key='value' padding=0.2 min-delta=5)
+      range=ctx.horizontalRange
+    }}
+    {{e3-scale/linear ctx 'y'
+      domain=(e3-extent model key='temperature' padding=0.2 min-delta=5)
+      range=ctx.verticalRange
+    }}
+  </metadata>
+
+  {{#e3-stacked-each model sum-props='value temperature' as |data cums index|}}
+    {{!-- Update to use the group for the stacked each.  --}}
+    {{!e3-shape/rectangle stackCtx
+      data=data
+      y=(e3-bind-scale )
+    }}
+  {{/e3-stacked-each}}
+{{/e3-container}}

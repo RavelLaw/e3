@@ -1,12 +1,17 @@
 import Ember from 'ember';
 import Renderable from '../utils/shadow/renderable';
-const {on, get, set} = Ember;
+const {get, set} = Ember;
 
 export default Ember.Mixin.create({
   /*
    Don't render anything.
    */
   tagName: '',
+
+  /*
+   Let the context be just the first argument.
+   */
+  positionalParams: ['context'],
 
   /*
     The name of the shadow type to lookup.

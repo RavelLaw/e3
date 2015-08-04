@@ -48,7 +48,7 @@ ShadowEvent.prototype = {
       currentTarget = currentTarget.parent;
     }
 
-    return resul;
+    return result;
   },
 
   /*
@@ -70,24 +70,19 @@ ShadowEvent.prototype = {
     switch(type) {
       case 'mousemove':
         return mouseMoveEvents(this, previousEvent);
-        break;
       case 'mousedown':
         return mouseDownEvents(this, previousEvent);
-        break;
       case 'mouseup':
         return mouseUpEvents(this, previousEvent);
-        break;
       case 'mouseout':
         return mouseOutEvents(this, previousEvent);
-        break;
       default:
         return [];
-        break;
     }
   }
 };
 
-function ev(type, target, event) {
+function ev(type, target) {
   return {
     type: type,
     target: target
@@ -126,7 +121,7 @@ function mouseMoveEvents(current, previous) {
   return events;
 }
 
-function mouseDownEvents(current, previous) {
+function mouseDownEvents(current) {
   /*
     - set the mouseDownEvent to this
     - dispatch mousedown on target

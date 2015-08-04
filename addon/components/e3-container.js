@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/e3-container';
 import renderQueue from '../mixins/e3-render-queue';
+import meta from '../mixins/e3-meta';
 import Group from '../utils/shadow/group';
 import ShadowEvent from '../utils/shadow/event';
 
@@ -10,7 +11,7 @@ const {
   tryInvoke
 } = Ember;
 
-export default Ember.Component.extend(renderQueue, {
+export default Ember.Component.extend(renderQueue, meta, {
   layout: layout,
 
   tagName: computed('attrs.type', function() {
@@ -18,6 +19,20 @@ export default Ember.Component.extend(renderQueue, {
   }),
 
   attributeBindings: ['attrs.height:height', 'attrs.width:width'],
+
+  /*
+   Computed property for the vertial range
+   */
+  verticalRange: computed('attrs.height', function() {
+    return [0, this.getAttr('height')];
+  }),
+
+  /*
+   Computed property for the horizontal range
+   */
+  horizontalRange: computed('attrs.width', function() {
+    return [0, this.getAttr('width')];
+  }),
 
   /*
    The public attributes
@@ -39,13 +54,6 @@ export default Ember.Component.extend(renderQueue, {
    The two "stage" that handles all the rendering
    */
   stage: null,
-
-  /*
-   We may change this at some point to only make certain methods/props available.
-   */
-  context: computed(function() {
-    return this;
-  }),
 
   /*
    Register a child with the stage.
@@ -142,7 +150,6 @@ export default Ember.Component.extend(renderQueue, {
    Create the render stage.
    */
   setupShadowElement: on('init', function() {
-    /* globals Two */
     let stage = new Group(this, 'stage', this.getAttr('type'));
     set(this, 'stage', stage);
   })

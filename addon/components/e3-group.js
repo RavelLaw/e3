@@ -1,14 +1,11 @@
 import Ember from 'ember';
-import layout from '../templates/components/e3-group';
+import layout from '../templates/components/e3-container';
 import Group from '../utils/shadow/group';
 import e3AnimatedChild from '../mixins/e3-animated-child';
-const {get, set, computed} = Ember;
+import meta from '../mixins/e3-meta';
+const {get, set} = Ember;
 
-/*
- A group should yield itself for registration as well as its transformation matrix.
- Then, we don't need to actually render the groups themselves!
- */
-export default Ember.Component.extend(e3AnimatedChild, {
+export default Ember.Component.extend(e3AnimatedChild, meta, {
   shadowType: 'group',
   layout: layout,
 

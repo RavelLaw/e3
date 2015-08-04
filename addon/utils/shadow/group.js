@@ -5,10 +5,11 @@ import {
   multiply,
   identity,
   translate,
-  rotate
+  rotate,
+  scale
 } from './matrix-math';
-const {merge, isArray, get, assert} = Ember;
-const {keys, create} = Object;
+const {merge, get, assert} = Ember;
+const {create} = Object;
 
 export default function Group(component, groupType, contextType, attrs = null) {
   // Make sure the children isntance is different per child.

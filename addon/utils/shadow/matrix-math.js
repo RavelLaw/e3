@@ -12,7 +12,7 @@ export function multiply(A, B) {
   result[7] = A[6] * B[1] + A[7] * B[4] + A[8] * B[7];
   result[8] = A[6] * B[2] + A[7] * B[5] + A[8] * B[8];
   return result;
-};
+}
 
 export function identity() {
   return [
@@ -20,7 +20,7 @@ export function identity() {
     0, 1, 0,
     0, 0, 1
   ];
-};
+}
 
 export function translate(matrix, dx, dy) {
   return multiply(matrix, [

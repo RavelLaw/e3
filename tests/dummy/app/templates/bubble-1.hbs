@@ -1,0 +1,31 @@
+<button {{action 'add'}}>Add</button>
+<button {{action 'clear'}}>Clear</button>
+<button {{action 'togglePaddeder'}}>{{if isPaddeder 'Paddeder!' 'Not Paddeder'}}</button>
+<br><br>
+{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
+  <metadata>
+    {{e3-scale/linear ctx 'x'
+      domain=(e3-extent model key='value' padding=0.2 min-delta=5)
+      range=ctx.horizontalRange
+    }}
+    {{#if isPaddeder}}
+      {{e3-scale/linear ctx 'y'
+        domain=(e3-extent model key='temperature' padding=0.2 min-delta=5)
+        range=ctx.verticalRange
+      }}
+    {{else}}
+      {{e3-scale/linear ctx 'y'
+        domain=(e3-extent model key='temperature' padding=0.8 min-delta=5)
+        range=ctx.verticalRange
+      }}
+    {{/if}}
+  </metadata>
+
+  {{#each model as |data|}}
+    {{e3-shape/circle ctx
+      data=data
+      x=(e3-bind-scale meta.scales.x 'value')
+      y=(e3-bind-scale meta.scales.y 'temperature')
+    }}
+  {{/each}}
+{{/e3-container}}

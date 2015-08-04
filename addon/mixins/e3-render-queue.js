@@ -1,6 +1,7 @@
 import Ember from 'ember';
-import {raf} from '../utils/e3-raf';
+import raf from '../utils/e3-raf';
 const {get, set, computed, Evented} = Ember;
+const RAF = raf();
 
 export default Ember.Mixin.create(Evented, {
   /*
@@ -23,12 +24,12 @@ export default Ember.Mixin.create(Evented, {
   /*
    An optional hook to do somethign before a tick occurs.
    */
-  tickWillRender(time) {},
+  tickWillRender(/*time*/) {},
 
   /*
    An optional hook to do somethign after a tick occurs.
    */
-  tickDidRender(time) {},
+  tickDidRender(/*time*/) {},
 
   /*
    A flag that says wether there is an animation already running.
@@ -60,7 +61,7 @@ export default Ember.Mixin.create(Evented, {
   _animate() {
     var that = this;
     set(this, 'hasActiveQueue', true);
-    requestAnimationFrame(function(newTime) {
+    RAF(function(newTime) {
       that._flushQueue(newTime);
     });
   },

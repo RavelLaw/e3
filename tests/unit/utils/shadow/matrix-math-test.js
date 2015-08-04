@@ -1,12 +1,8 @@
 import mmath from '../../../../utils/shadow/matrix-math';
 import { module, test } from 'qunit';
 const {
-  multiply,
   identity,
-  scale,
-  translate,
-  rotate,
-  toArray
+  translate
 } = mmath;
 
 module('Unit | Utility | shadow/matrix math');

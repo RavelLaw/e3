@@ -2,7 +2,7 @@ import Ember from 'ember';
 import e3AnimatedChild from 'e3/mixins/e3-animated-child';
 
 export default Ember.Component.extend(e3AnimatedChild, {
-  shadowType(parentContext, selfContext, attrs, matrix, cumMatrix) {
+  shadowType(parentContext, selfContext, attrs) {
     parentContext.beginPath();
     parentContext.arc(attrs.x, attrs.y, attrs.radius, 0, 2 * Math.PI);
     parentContext.fillStyle = 'blue';

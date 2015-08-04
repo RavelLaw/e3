@@ -1,8 +1,10 @@
 import Ember from 'ember';
-const {get, set} = Ember;
 
 export default Ember.Controller.extend({
   showThird: false,
+
+  domain: [0,100],
+  range: [0,200],
 
   actions: {
     addThird() {
