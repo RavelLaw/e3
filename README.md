@@ -12,6 +12,7 @@ This README outlines the details of collaborating on this Ember addon.
 
 * `ember server`
 * Visit your app at http://localhost:4200.
+* View the dummy app in `tests/dummy/app` for some (limited) examples
 
 ## Running Tests
 
