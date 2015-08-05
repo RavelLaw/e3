@@ -13,7 +13,7 @@ function o() {
     id: ++ID,
     value: Math.random() * 100,
     temperature: Math.random() * 100
-  }
+  };
 }
 
 export default Ember.Route.extend({

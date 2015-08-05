@@ -7,8 +7,8 @@ module.exports = {
     this._super.included(app);
 
     app.import({
-      development: app.bowerDirectory + '/two/build/two.js',
-      production: app.bowerDirectory + '/two/build/two.min.js'
+      development: app.bowerDirectory + '/two.js/build/two.js',
+      production: app.bowerDirectory + '/two.js/build/two.min.js'
     });
   }
 };
