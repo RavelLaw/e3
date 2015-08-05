@@ -1,4 +1,5 @@
-// import Ember from 'ember';
+import Ember from 'ember';
+const {isArray} = Ember;
 const {keys} = Object;
 
 /*
@@ -7,7 +8,7 @@ const {keys} = Object;
 
  For now, we're only supporting numbers. This needs lots of work to support other types of
  interpolate-able values.
- [ ] Arrays
+ [X] Arrays
  [ ] Colors (rgb, hex, hsl?)
  [ ] Custom Interpolators?
  [ ]
@@ -17,9 +18,28 @@ export default function interpolate(hashA, hashB, percent = 0) {
   keys(hashA).forEach(key => {
     let a = hashA[key];
     let b = hashB[key];
-    resHash[key] = a === b ? a : numberInterpolate(hashA[key], hashB[key], percent);
+    if(isArray(a)) {
+      resHash[key] = a.map((aVal, index) => {
+        return interpolatePrimitives(aVal, b[index], percent);
+      });
+    } else {
+      resHash[key] = interpolatePrimitives(a, b, percent);
+    }
+
   });
   return resHash;
+}
+
+function interpolatePrimitives(valA, valB, percent) {
+  // Determine the type of valA.
+  // TODO: Support more than just numbers.
+
+  // First, no-op if equal.
+  if(valA === valB) {
+    return valA;
+  } else {
+    return numberInterpolate(valA, valB, percent);
+  }
 }
 
 function numberInterpolate(valA, valB, percent) {
