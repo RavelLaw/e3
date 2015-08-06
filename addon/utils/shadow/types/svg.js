@@ -88,9 +88,11 @@ function generateSVGObject(parent, type) {
  */
 function renderAttributes(ns, node, attrs) {
   let map = ATTRIBUTE_MAP[ns] || {};
-  keys(attrs).forEach(key => {
-    let attrKey = map[key] || key;
-    node.setAttribute(attrKey, attrs[key]);
+  keys(map).forEach(key => {
+    let attrKey = map[key];
+    if(key in attrs) {
+      node.setAttribute(attrKey, attrs[key]);
+    }
   });
 }
 
