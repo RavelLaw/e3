@@ -34,6 +34,13 @@ export default {
     return parentContext;
   },
 
+  path(parentContext, selfContext, attrs, matrix) {
+    preShape(parentContext, attrs, matrix);
+    generatePath(parentContext, attrs.x, attrs.y);
+    postShape(parentContext, attrs, matrix);
+    return parentContext;
+  },
+
   stage(parentContext, selfContext, attrs) {
     if(!selfContext) {
       selfContext = parentContext.getContext('2d');
@@ -59,7 +66,7 @@ function postShape(parentContext, attrs) {
   let workingVal;
   let shouldStroke = false;
 
-  if(attrs.fill) {
+  if(attrs.fill && attrs.fill !== 'none') {
     parentContext.fillStyle = attrs.fill;
     parentContext.fill();
   }
@@ -80,4 +87,18 @@ function postShape(parentContext, attrs) {
 
   // Restore the context.
   parentContext.restore();
+}
+
+function generatePath(context, xPoints, yPoints) {
+  let length = Math.min(xPoints.length, yPoints.length);
+
+  for(let i = 0; i < length; i++) {
+    let x = xPoints[i];
+    let y = yPoints[i];
+    if(i === 0) {
+      context.moveTo(x, y);
+    } else {
+      context.lineTo(x, y);
+    }
+  }
 }

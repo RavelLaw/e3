@@ -1,6 +1,8 @@
+import Ember from 'ember';
 import {toArray} from '../matrix-math';
 import ATTRIBUTE_MAP from './svg-attribute-map';
 const {keys} = Object;
+const {copy} = Ember;
 
 export default {
   group(parentContext, selfContext, attrs, matrix) {
@@ -30,6 +32,19 @@ export default {
     attrs.y1 = attrs.y1 === undefined ? attrs.y : attrs.y1;
     attrs.y2 = attrs.y2 === undefined ? attrs.y : attrs.y2;
     renderAttributes('line', selfContext, attrs);
+    return selfContext;
+  },
+
+  path(parentContext, selfContext, attrs) {
+    selfContext = preRender(selfContext, parentContext, 'path');
+    // Not the best idea; not terrible. (we don't want to render x,y as attributes).
+    attrs = copy(attrs);
+
+    // Create the 'd' string from the attrs x/y
+    attrs.d = generatePath(attrs.x, attrs.y);
+    delete attrs.x;
+    delete attrs.y;
+    renderAttributes('path', selfContext, attrs);
     return selfContext;
   },
 
@@ -77,4 +92,20 @@ function renderAttributes(ns, node, attrs) {
     let attrKey = map[key] || key;
     node.setAttribute(attrKey, attrs[key]);
   });
+}
+
+/*
+ TODO: This needs some borrowing from D3 and should be spun out into a more
+ robust line library.
+ */
+function generatePath(xPoints, yPoints) {
+  let length = Math.min(xPoints.length, yPoints.length);
+  let result = [];
+  for(let i = 0; i < length; i++) {
+    let x = xPoints[i];
+    let y = yPoints[i];
+    result.push(i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`);
+  }
+
+  return result.join(' ');
 }
