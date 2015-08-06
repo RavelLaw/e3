@@ -37,14 +37,18 @@ export default {
 
   path(parentContext, selfContext, attrs) {
     selfContext = preRender(selfContext, parentContext, 'path');
-    // Not the best idea; not terrible. (we don't want to render x,y as attributes).
-    attrs = copy(attrs);
-
     // Create the 'd' string from the attrs x/y
     attrs.d = generatePath(attrs.x, attrs.y);
-    delete attrs.x;
-    delete attrs.y;
     renderAttributes('path', selfContext, attrs);
+    return selfContext;
+  },
+
+  text(parentContext, selfContext, attrs) {
+    selfContext = preRender(selfContext, parentContext, 'text');
+    // Don't affect other state. We should
+    attrs = copy(attrs);
+    renderAttributes('text', selfContext, attrs);
+    selfContext.textContent = attrs.text;
     return selfContext;
   },
 

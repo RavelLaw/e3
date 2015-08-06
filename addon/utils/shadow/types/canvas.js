@@ -41,6 +41,12 @@ export default {
     return parentContext;
   },
 
+  text(parentContext, selfContext, attrs, matrix) {
+    preShape(parentContext, attrs, matrix);
+    parentContext.fillText(attrs.text, attrs.x, attrs.y);
+    return parentContext;
+  },
+
   stage(parentContext, selfContext, attrs) {
     if(!selfContext) {
       selfContext = parentContext.getContext('2d');

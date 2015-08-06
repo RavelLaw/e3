@@ -9,6 +9,7 @@ Router.map(function() {
   this.route('bubble-1');
   this.route('stacked-bar');
   this.route('line-graph');
+  this.route('text-sample');
 });
 
 export default Router;
