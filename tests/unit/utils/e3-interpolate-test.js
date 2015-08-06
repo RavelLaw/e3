@@ -28,3 +28,8 @@ test('array of values interpolation with different lengths', function(assert) {
   result = e3Interpolate(b, a, 0.5);
   assert.deepEqual(result, {x: [10,10,0]}, 'opposite works too.');
 });
+
+test('interpolate hexadecimal colors', function(assert) {
+  assert.equal(e3Interpolate('#000','#fff',0.5), '#808080');
+  assert.equal(e3Interpolate('#000000','#ffffff',0.5), '#808080');
+});
