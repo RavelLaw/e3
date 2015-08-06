@@ -1,5 +1,6 @@
 import Ember from 'ember';
 let ID = 0;
+// TODO: Use faker or something here.
 function g(number) {
   let res = [];
   while(--number >= 0) {

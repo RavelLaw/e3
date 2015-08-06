@@ -8,6 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('bubble-1');
   this.route('stacked-bar');
+  this.route('line-graph');
 });
 
 export default Router;
