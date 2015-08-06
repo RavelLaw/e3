@@ -65,7 +65,6 @@ export default Ember.Mixin.create(e3Child, {
     let data = this.getAttr('data');
     let attrs = this.get('attrs');
     let resultState = {};
-    let isValidState = true;
 
     // Add the current index if there is one.
     // resultState.zindex = this.getAttr('zindex');
@@ -77,20 +76,13 @@ export default Ember.Mixin.create(e3Child, {
         let val = attrs.hasOwnProperty(key) && stateName === 'activeState' ? this.getAttr(key) : get(state, key);
         if(typeof val === 'function') {
           resultState[key] = val.call(this, data, index);
-        } else if(!val) {
-          // Fail this state if any of the required values are empty.
-          isValidState = false;
         } else {
           resultState[key] = val;
         }
       });
     }
 
-    if(isValidState) {
-      return resultState;
-    } else {
-      return false;
-    }
+    return resultState;
   },
 
   /*
