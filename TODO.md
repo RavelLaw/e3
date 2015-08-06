@@ -1,4 +1,4 @@
-- [-] Support Mouse Events
+- [ ] Support Mouse Events
   - [X] Mouse Enter
   - [X] Mouse Leave
   - [X] Mouse Move
@@ -13,22 +13,36 @@
   - [X] Vertical Line
   - [X] Horizontal Line
   - [ ] Text
+    - [X] Basic Text
+    - [ ] Text "Group" to support rendering other elements that are
+          responsive to the size of the text (text background for example)
+    - [ ] Easy Text wrapping?
   - [X] Path* (this needs some thought for canvas/svg compatibility)
     - [ ] Add support for interpolation/smoothing on paths
     - [ ] Add Scale helpers for enter/exit state for array-like data.
   - [X] ~~Polygon (Same applies as path).~~ (Needed?)
+- [ ] Support all possible shape properties
+  - [X] Stroke Width
+  - [X] Stroke Color
+  - [X] Fill Color
+  - [ ] Text Align
+  - [ ] Text Vertical Align
+  - [ ] Others?
 - [X] Create Array Helpers
   - [X] Extent (Include "padding" option)
   - [X] Unique
-- [-] Create Scales (Feature Parity with D3?)
+- [ ] Create Scales (Feature Parity with D3?)
   - [X] Linear Scale
   - [ ] Ordinal Scale
+    - [ ] Color Scales
   - [ ] Date Scale
   - [X] Bind Scale to Renderable Property Helper
 - [ ] Create Layout Engines
   - [ ] Force Direction
   - [ ] Collision Detection
-- [-] Create Stacked Groups (provides previous & next data)
+  - [ ] Create Ways to Bind Layouts to shapes/renderables (AKA: Given data & property, get
+        coordinate)
+- [ ] Create Stacked Groups (provides previous & next data)
   - [ ] Stacked Renderable Types (Stacked Bar, Pie, Stacked Area)
 - [ ] Transition Enter State with Previous Scale
   - [ ] How to handle Ordinal Scales where value didn't exist previously? (closest index?)
@@ -36,3 +50,5 @@
   - [ ] Basic Quad Easing
   - [ ] Elastic Easing
   - [ ] Linear Easing
+- [ ] Auto Height/Width options for
+- [ ] Canvas High DPI: http://www.html5rocks.com/en/tutorials/canvas/hidpi/
