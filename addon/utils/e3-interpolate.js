@@ -15,19 +15,34 @@ const {keys} = Object;
  */
 export default function interpolate(hashA, hashB, percent = 0) {
   var resHash = {};
+
   keys(hashA).forEach(key => {
     let a = hashA[key];
     let b = hashB[key];
     if(isArray(a)) {
-      resHash[key] = a.map((aVal, index) => {
-        return interpolatePrimitives(aVal, b[index], percent);
-      });
+      // TODO: we need to guarantee the array lengths in some way. :-\
+      resHash[key] = interpolateArray(a, b, percent);
+      // resHash[key] = a.map((aVal, index) => {
+      //   return interpolatePrimitives(aVal, b[index], percent);
+      // });
     } else {
       resHash[key] = interpolatePrimitives(a, b, percent);
     }
 
   });
   return resHash;
+}
+
+function interpolateArray(arrA, arrB, percent) {
+  let length = Math.max(arrA.length, arrB.length);
+  let result = [];
+  for (let i = 0; i < length; i++) {
+    let valA = arrA[i] || 0;
+    let valB = arrB[i] || 0;
+    result.push(interpolatePrimitives(valA, valB, percent));
+  };
+
+  return result;
 }
 
 function interpolatePrimitives(valA, valB, percent) {
