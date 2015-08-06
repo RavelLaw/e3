@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const {isArray} = Ember;
+const {isArray, typeOf} = Ember;
 const {keys} = Object;
 
 /*
@@ -13,50 +13,62 @@ const {keys} = Object;
  [ ] Custom Interpolators?
  [ ]
  */
-export default function interpolate(hashA, hashB, percent = 0) {
+export default function interpolate(fromVal, toVal, percent = 0) {
+  let type = typeOf(fromVal);
+
+  switch(type) {
+    case 'object':
+      return interpolateHash(fromVal, toVal, percent);
+    case 'array':
+      return interpolateArray(fromVal, toVal, percent);
+    case 'string':
+      // TODO: String Interpolation. Detect Colors/other interpolate-able strings
+      return toVal;
+    case 'number':
+      return interpolateNumber(fromVal, toVal, percent);
+  }
+}
+
+function interpolateHash(hashA, hashB, percent) {
   var resHash = {};
 
   keys(hashA).forEach(key => {
     let a = hashA[key];
     let b = hashB[key];
-    if(isArray(a)) {
-      // TODO: we need to guarantee the array lengths in some way. :-\
-      resHash[key] = interpolateArray(a, b, percent);
-      // resHash[key] = a.map((aVal, index) => {
-      //   return interpolatePrimitives(aVal, b[index], percent);
-      // });
-    } else {
-      resHash[key] = interpolatePrimitives(a, b, percent);
-    }
-
+    resHash[key] = interpolate(a,b,percent);
   });
   return resHash;
 }
 
 function interpolateArray(arrA, arrB, percent) {
-  let length = Math.max(arrA.length, arrB.length);
+  let aLength = arrA.length;
+  let bLength = arrB.length;
+  let sharedLength = Math.min(arrA.length, arrB.length);
   let result = [];
-  for (let i = 0; i < length; i++) {
-    let valA = arrA[i] || 0;
-    let valB = arrB[i] || 0;
-    result.push(interpolatePrimitives(valA, valB, percent));
+  let i = 0;
+
+  // First, interpolate the items among the shared length.
+  for (; i < sharedLength; i++) {
+    result.push(interpolate(arrA[i], arrB[i], percent));
   };
+
+  // Then continue to the max length of the other arrays (if applicable)
+  for(; i < aLength; i++) {
+    result.push(arrA[i]);
+  }
+
+  for(; i < bLength; i++) {
+    result.push(arrB[i]);
+  }
 
   return result;
 }
 
-function interpolatePrimitives(valA, valB, percent) {
-  // Determine the type of valA.
-  // TODO: Support more than just numbers.
-
+function interpolateNumber(valA, valB, percent) {
   // First, no-op if equal.
   if(valA === valB) {
     return valA;
   } else {
-    return numberInterpolate(valA, valB, percent);
+    return (valB - valA) * percent + valA;
   }
-}
-
-function numberInterpolate(valA, valB, percent) {
-  return (valB - valA) * percent + valA;
 }

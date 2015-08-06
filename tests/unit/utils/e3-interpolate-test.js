@@ -20,8 +20,11 @@ test('add array of values interpolation', function(assert) {
 });
 
 test('array of values interpolation with different lengths', function(assert) {
-  let a = {x: []};
+  let a = {x: [0]};
   let b = {x: [20, 10, 0]};
   var result = e3Interpolate(a, b, 0.5);
-  assert.deepEqual(result, {x: [10,5,0]});
+  assert.deepEqual(result, {x: [10,10,0]});
+
+  result = e3Interpolate(b, a, 0.5);
+  assert.deepEqual(result, {x: [10,10,0]}, 'opposite works too.');
 });
