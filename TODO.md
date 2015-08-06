@@ -13,8 +13,10 @@
   - [X] Vertical Line
   - [X] Horizontal Line
   - [ ] Text
-  - [ ] Path* (this needs some thought for canvas/svg compatibility)
-  - [ ] Polygon (Same applies as path).
+  - [X] Path* (this needs some thought for canvas/svg compatibility)
+    - [ ] Add support for interpolation/smoothing on paths
+    - [ ] Add Scale helpers for enter/exit state for array-like data.
+  - [X] ~~Polygon (Same applies as path).~~ (Needed?)
 - [X] Create Array Helpers
   - [X] Extent (Include "padding" option)
   - [X] Unique
