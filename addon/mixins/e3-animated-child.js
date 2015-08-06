@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
 import interpolate from '../utils/e3-interpolate';
-const {get, set, merge, copy, isEmpty, run: {scheduleOnce}} = Ember;
+const {get, set, merge, copy, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
 const {max, min} = Math;
 
@@ -77,7 +77,7 @@ export default Ember.Mixin.create(e3Child, {
         let val = attrs.hasOwnProperty(key) && stateName === 'activeState' ? this.getAttr(key) : get(state, key);
         if(typeof val === 'function') {
           resultState[key] = val.call(this, data, index);
-        } else if(isEmpty(val)) {
+        } else if(!val) {
           // Fail this state if any of the required values are empty.
           isValidState = false;
         } else {
@@ -105,6 +105,7 @@ export default Ember.Mixin.create(e3Child, {
    */
   setupInitialState() {
     let state = this.generateState('enterState');
+
     if(state) {
       this._previousState = state;
       this.generateShadowObject(this.getType(), state);
