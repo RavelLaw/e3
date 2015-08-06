@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import renderTypes from './render-types';
-const {get, assert} = Ember;
+const {get, assert, copy} = Ember;
 
 export default function Renderable(component, shapeType, contextType, attrs = null) {
   if(attrs) {
@@ -105,7 +105,8 @@ Renderable.prototype = {
    */
   setAttributes(attrs) {
     this.attrsAreDirty = true;
-    this.attrs = attrs;
+    // No side effects plz!
+    this.attrs = copy(attrs);
   },
 
   /*
