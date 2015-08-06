@@ -1,4 +1,4 @@
-{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
   <metadata>
     {{e3-scale/linear ctx 'x'
       domain=(e3-extent model key='value' padding=0.2 min-delta=5)
@@ -15,7 +15,7 @@
       data=data
       x=(e3-bind-scale meta.scales.x 'value')
       y=(e3-bind-scale meta.scales.y 'temperature')
-      text=data.temperature
+      text=(temperature-format data.temperature)
     }}
   {{/each}}
 {{/e3-container}}
