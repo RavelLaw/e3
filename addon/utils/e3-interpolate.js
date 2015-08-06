@@ -30,13 +30,25 @@ export default function interpolate(fromVal, toVal, percent = 0) {
 }
 
 function interpolateHash(hashA, hashB, percent) {
-  var resHash = {};
+  let resHash = {};
+  let key;
 
-  keys(hashA).forEach(key => {
-    let a = hashA[key];
-    let b = hashB[key];
-    resHash[key] = interpolate(a,b,percent);
-  });
+  // First, interpolate all the keys from hash A.
+  for(key in hashA) {
+    if(key in hashB) {
+      resHash[key] = interpolate(hashA[key], hashB[key], percent);
+    } else {
+      resHash[key] = hashA[key];
+    }
+  }
+
+  // Find any not in hash b and add that value to the result.
+  for(key in hashB) {
+    if(!(key in hashB)) {
+      resHash[key] = hashB[key];
+    }
+  }
+
   return resHash;
 }
 
