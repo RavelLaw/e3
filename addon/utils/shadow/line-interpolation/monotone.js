@@ -77,9 +77,7 @@ function d3_svg_lineMonotoneTangents(points) {
 
 // Hermite spline construction; generates "C" commands.
 function d3_svg_lineHermite(points, tangents) {
-  if (tangents.length < 1
-      || (points.length !== tangents.length
-      && points.length !== tangents.length + 2)) {
+  if (tangents.length < 1 || (points.length !== tangents.length && points.length !== tangents.length + 2)) {
     return points;
   }
 
