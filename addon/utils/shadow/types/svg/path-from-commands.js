@@ -6,14 +6,14 @@ export default function pathFromCommands(commands) {
     }
 
     if (command.length === 4) {
-      name = 'C';
+      name = 'S';
     }
 
     if (command.length === 6) {
-      name = 'Q';
+      name = 'C';
     }
 
-    return name + ' ' + command.join(' ');
+    return name + command.join(',');
   });
 
   return svgCommands.join(' ');
