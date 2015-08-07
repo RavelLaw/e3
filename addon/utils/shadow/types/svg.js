@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import {toArray} from '../matrix-math';
+import pathCommands from '../line-interpolation/path-commands';
+import pathFromCommands from './svg/path-from-commands';
 import ATTRIBUTE_MAP from './svg-attribute-map';
 const {keys} = Object;
 const {copy} = Ember;
@@ -38,7 +40,8 @@ export default {
   path(parentContext, selfContext, attrs) {
     selfContext = preRender(selfContext, parentContext, 'path');
     // Create the 'd' string from the attrs x/y
-    attrs.d = generatePath(attrs.x, attrs.y);
+    attrs.d = pathFromCommands(pathCommands(attrs.x, attrs.y, attrs.interpolation));
+
     renderAttributes('path', selfContext, attrs);
     return selfContext;
   },
@@ -98,20 +101,4 @@ function renderAttributes(ns, node, attrs) {
       node.setAttribute(attrKey, attrs[key]);
     }
   });
-}
-
-/*
- TODO: This needs some borrowing from D3 and should be spun out into a more
- robust line library.
- */
-function generatePath(xPoints, yPoints) {
-  let length = Math.min(xPoints.length, yPoints.length);
-  let result = [];
-  for(let i = 0; i < length; i++) {
-    let x = xPoints[i];
-    let y = yPoints[i];
-    result.push(i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`);
-  }
-
-  return result.join(' ');
 }

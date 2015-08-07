@@ -1,3 +1,5 @@
+import pathCommands from '../line-interpolation/path-commands';
+import pathFromCommands from './canvas/path-from-commands';
 import {toArray, identity} from '../matrix-math';
 const {
   PI
@@ -36,7 +38,7 @@ export default {
 
   path(parentContext, selfContext, attrs, matrix) {
     preShape(parentContext, attrs, matrix);
-    generatePath(parentContext, attrs.x, attrs.y);
+    pathFromCommands(parentContext, pathCommands(attrs.x, attrs.y, attrs.interpolation));
     postShape(parentContext, attrs, matrix);
     return parentContext;
   },
@@ -93,18 +95,4 @@ function postShape(parentContext, attrs) {
 
   // Restore the context.
   parentContext.restore();
-}
-
-function generatePath(context, xPoints, yPoints) {
-  let length = Math.min(xPoints.length, yPoints.length);
-
-  for(let i = 0; i < length; i++) {
-    let x = xPoints[i];
-    let y = yPoints[i];
-    if(i === 0) {
-      context.moveTo(x, y);
-    } else {
-      context.lineTo(x, y);
-    }
-  }
 }
