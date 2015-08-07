@@ -1,6 +1,5 @@
 import Ember from 'ember';
-const {isArray, typeOf} = Ember;
-const {keys} = Object;
+const {typeOf} = Ember;
 const HEXCOLORREGEX = /^#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}$/;
 const {round, min} = Math;
 
@@ -64,7 +63,7 @@ function interpolateArray(arrA, arrB, percent) {
   // First, interpolate the items among the shared length.
   for (; i < sharedLength; i++) {
     result.push(interpolate(arrA[i], arrB[i], percent));
-  };
+  }
 
   // Then continue to the max length of the other arrays (if applicable)
   for(; i < aLength; i++) {
@@ -103,7 +102,6 @@ function interpolateHexColor(valA, valB, percent) {
 function hexToArray(hexString) {
   let color = parseInt(hexString.slice(1), 16);
   let result = [];
-  let r,g,b;
 
   /*
    Do some bit shifting magic.
