@@ -6,14 +6,14 @@ module('Unit | Utility | shadow/group');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var group = new Group();
-  var group2 = new Group();
+  var group = new Group({}, 'stage', 'svg');
+  var group2 = new Group({}, 'stage', 'svg');
   assert.ok(group);
   assert.notEqual(group.children, group2.children);
 });
 
 test('add remove children', function(assert) {
-  var group = new Group();
+  var group = new Group({}, 'stage', 'svg');
   var child1 = {};
   var child2 = {};
 
@@ -30,9 +30,9 @@ test('add remove children', function(assert) {
 });
 
 test('renderable join and leave groups', function(assert) {
-  var group = new Group();
-  var child1 = new Renderable();
-  var child2 = new Renderable();
+  var group = new Group({}, 'stage', 'svg');
+  var child1 = new Renderable({}, 'circle', 'svg');
+  var child2 = new Renderable({}, 'circle', 'svg');
 
   child1.join(group);
   assert.equal(group.children.length, 1);
@@ -42,33 +42,4 @@ test('renderable join and leave groups', function(assert) {
   assert.equal(group.children.length, 1);
   child2.leave();
   assert.equal(group.children.length, 0);
-});
-
-test('test group matrix generation', function(assert) {
-  let group = new Group();
-  group.setAttributes({
-    x: 50,
-    y: 10
-  });
-
-  let childGroup = new Group();
-  childGroup.join(group);
-  childGroup.setAttributes({
-    x: 20,
-    y: 30
-  });
-
-  let grandChild = new Group();
-  grandChild.join(childGroup);
-  grandChild.setAttributes({
-    x: -70,
-    y: -40
-  });
-
-  let matrix = group.getMatrix();
-  assert.deepEqual(matrix, [1,0,50,0,1,10,0,0,1]);
-  let childMatrix = childGroup.getMatrix();
-  assert.deepEqual(childMatrix, [1,0,70,0,1,40,0,0,1]);
-  let grandMatrix = grandChild.getMatrix();
-  assert.deepEqual(grandMatrix, [1,0,0,0,1,0,0,0,1]);
 });
