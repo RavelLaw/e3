@@ -12,6 +12,7 @@ export default Ember.Component.extend(e3AnimatedChild, {
     y: null,
     'stroke-width': 5,
     'stroke': 'blue',
-    'fill': 'none'
+    'fill': 'none',
+    'interpolation': 'linear'
   }
 });
