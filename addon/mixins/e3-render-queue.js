@@ -22,12 +22,12 @@ export default Ember.Mixin.create(Evented, {
   animationDidComplete() {},
 
   /*
-   An optional hook to do somethign before a tick occurs.
+   An optional hook to do something before a tick occurs.
    */
   tickWillRender(/*time*/) {},
 
   /*
-   An optional hook to do somethign after a tick occurs.
+   An optional hook to do something after a tick occurs.
    */
   tickDidRender(/*time*/) {},
 
@@ -35,11 +35,6 @@ export default Ember.Mixin.create(Evented, {
    A flag that says wether there is an animation already running.
    */
   hasActiveQueue: false,
-
-  /*
-   The timestamp of the last tick in the RAF loop.
-   */
-  lastAnimationTick: 0,
 
   /*
    Add a new animation to the queue.
@@ -84,8 +79,7 @@ export default Ember.Mixin.create(Evented, {
       }
     }
 
-    // Save this as the last tick
-    set(this, 'lastAnimationTick', time);
+    // Trigger the did render hook.
     this.trigger('tickDidRender', time);
 
     if(queue.length > 0) {
