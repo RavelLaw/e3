@@ -116,7 +116,12 @@ function d3_svg_lineHermite(points, tangents) {
     for (var i = 2; i < tangents.length; i++, pi++) {
       p = points[pi];
       t = tangents[i];
+      let lt = tangents[i - 1];
+      let lp = points[i - 1];
+
       commands.push([
+        lp[0] + lt[0], // Add the last tangent but reflected
+        lp[1] + lt[1],
         p[0] - t[0],
         p[1] - t[1],
         p[0],
