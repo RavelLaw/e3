@@ -1,5 +1,5 @@
 import pathCommands from '../line-interpolation/path-commands';
-import pathFromCommands from 'canvas/path-from-comamnds';
+import pathFromCommands from './canvas/path-from-commands';
 import {toArray, identity} from '../matrix-math';
 const {
   PI
