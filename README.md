@@ -121,8 +121,8 @@ There's some important things underneath these shapes that dictate how they rend
 ```javascript
 // components/super-circle.js
 import Ember from 'ember';
-import animatedChild from 'e3/mixins/e3-animated-child`;
-import middleOfScale from 'e3/utils/e3-helpers/scale/middle`;
+import animatedChild from 'e3/mixins/e3-animated-child';
+import middleOfScale from 'e3/utils/e3-helpers/scale/middle';
 
 export default Ember.Component.extend(animatedChild, {
 	shadowType: 'circle',
