@@ -1,3 +1,5 @@
+![Travis CI](https://travis-ci.org/RavelLaw/e3.svg)
+
 # E3
 
 E3 is an Ember-centric data visualization library. 
