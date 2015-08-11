@@ -6,15 +6,17 @@ export default Ember.Component.extend(scale, {
   name: 'linear',
 
   /*
-   These are optional parameters for how to
+   These are optional parameters.
    */
   attrs: {
     clamp: false,
+    round: false
   },
 
   generateScale(range, domain) {
     return linear(range, domain, {
-      clamp: this.getAttr('clamp')
+      clamp: this.getAttr('clamp'),
+      round: this.getAttr('round')
     });
   }
 });
