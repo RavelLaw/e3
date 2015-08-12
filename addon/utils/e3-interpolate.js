@@ -45,7 +45,7 @@ function interpolateHash(hashA, hashB, percent) {
 
   // Find any not in hash b and add that value to the result.
   for(key in hashB) {
-    if(!(key in hashB)) {
+    if(!(key in hashA)) {
       resHash[key] = hashB[key];
     }
   }
