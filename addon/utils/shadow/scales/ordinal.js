@@ -1,5 +1,6 @@
 import Ember from 'ember';
 const {guidFor} = Ember; // We're using this to create a map. Alternatives? It's private.
+const {max} = Math;
 
 /*
  This assumes that the domain is full of unique values. Note: Domain does not need to be
@@ -30,7 +31,7 @@ export default function shadowScalesOrdinal(range = [0,1], domain = [0,1], optio
   }
 
   // The number of bands is 1 shorter if we're not banding.
-  let bands = banding ? domain.length : domain.length - 1;
+  let bands = max(1, banding ? domain.length : domain.length - 1);
 
   // This is the amount of space we're working within
   let usedRange = r1 - r0;
@@ -48,7 +49,7 @@ export default function shadowScalesOrdinal(range = [0,1], domain = [0,1], optio
 
   // Create the lookup map.
   let map = {};
-  let stepSpacing = (spaceBetween / (bands - 1));
+  let stepSpacing = (spaceBetween / max(1, (bands - 1)));
 
   // Create a lookup in the map for each item in the domain.
   domain.forEach((domItem, index) => {

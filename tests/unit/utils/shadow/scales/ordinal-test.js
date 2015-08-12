@@ -14,6 +14,14 @@ test('basic scaling works', function(assert) {
   assert.equal(result('b'), 100/3);
   assert.equal(result('c'), 200/3);
   assert.equal(result('d'), 100);
+
+  let resultZero = shadowScalesOrdinal([0,100], ['a']);
+  assert.equal(resultZero('a'), 0);
+
+  resultZero = shadowScalesOrdinal([0,100], ['a'], {
+    banding: true
+  });
+  assert.equal(resultZero('a'), 0);
 });
 
 test('basic scaling works with unique objects as domain', function(assert) {
