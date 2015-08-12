@@ -224,7 +224,7 @@ export default Ember.Mixin.create(e3Child, {
 
     // If there is an enter state, merge its properties with the active state.
     set(this, 'enterState', enterState ? copy(enterState) : copy(activeState));
-    set(this, 'exitState', exitState ? copy(exitState) : copy(activeState));
+    set(this, 'exitState', exitState ? copy(exitState) : copy(get(this, 'enterState')));
 
     // Also, make sure we create a copy so these can be overwritten.
     set(this, 'activeState', copy(activeState));
