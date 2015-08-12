@@ -1,0 +1,28 @@
+<button {{action 'addBar'}}>Add Bar</button>
+<br><br>
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
+  <metadata>
+    {{e3-scale/ordinal ctx 'x'
+      banding=true
+      domain=model
+      padding=0.2
+      outerPadding=10
+      range=ctx.horizontalRange
+      sortProperty='value'
+    }}
+    {{e3-scale/linear ctx 'y'
+      domain=(e3-extent model key='temperature' padding=0.2 min-delta=5)
+      range=ctx.verticalRange
+    }}
+  </metadata>
+
+  {{#each model key='id' as |data|}}
+    {{bar-item ctx
+      data=data
+      x=meta.scales.x
+      width=meta.scales.x.bandWidth
+      height=(e3-bind-scale meta.scales.y 'temperature')
+      y=(e3-bind-scale meta.scales.y 'temperature' scaleDifference=true)
+    }}
+  {{/each}}
+{{/e3-container}}

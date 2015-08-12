@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('line-graph');
   this.route('smooth-line-graph');
   this.route('text-sample');
+  this.route('bar-chart');
 });
 
 export default Router;
