@@ -1,7 +1,7 @@
-import e3HelpersScaleMiddle from 'e3/utils/e3-helpers/scale/middle';
+import e3HelpersScaleEnd from 'e3/utils/e3-helpers/scale/end';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | e3 helpers/scale/middle');
+module('Unit | Utility | e3 helpers/scale/end');
 
 // Replace this with your real tests.
 test('it works with a scale returned', function(assert) {
@@ -15,9 +15,9 @@ test('it works with a scale returned', function(assert) {
     }
   };
 
-  let helper = e3HelpersScaleMiddle('y');
+  let helper = e3HelpersScaleEnd('y');
   assert.ok(helper);
-  assert.equal(helper.call(context), 50);
+  assert.equal(helper.call(context), 100);
 });
 
 test('it works without a scale returned', function(assert) {
@@ -28,7 +28,7 @@ test('it works without a scale returned', function(assert) {
     }
   };
 
-  let helper = e3HelpersScaleMiddle('y');
+  let helper = e3HelpersScaleEnd('y');
   assert.ok(helper);
   assert.ok(!helper.call(context));
 });
