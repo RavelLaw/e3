@@ -66,7 +66,7 @@ export default Ember.Mixin.create({
    and add attributes hook to the scale.
    */
   _generateScale(range, domain) {
-    let scale = addScaleAccessor(this.generateScale(range, domain));
+    let scale = this.generateScale(range, domain);
     let attrs = this.generateScaleAttrs(range, domain);
     assert('The result of the generateScale method must be a function', typeof scale === 'function');
     keys(attrs).forEach(key => {
@@ -91,13 +91,3 @@ export default Ember.Mixin.create({
     };
   }
 });
-
-/*
- This wraps the provided scale in an accessor function as this is likely the desired behavior.
- */
-function addScaleAccessor(scale) {
-  return function(val, key) {
-    val = key ? get(val, key) : val;
-    return scale(val);
-  };
-}
