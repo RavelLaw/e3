@@ -61,28 +61,42 @@ export default Ember.Mixin.create(e3Child, {
    Also, if there was an attribute set with the same name directly, use that instead.
    */
   generateState(stateName) {
-    let state = get(this, stateName);
+    let activeState = get(this, 'activeState');
+
     let data = this.getAttr('data');
     let attrs = this.get('attrs');
     let resultState = {};
+    let requiredKeys = keys(activeState);
+    let state;
 
-    // Add the current index if there is one.
-    // resultState.zindex = this.getAttr('zindex');
+    // First apply the values to the active state
+    requiredKeys.forEach((key, index) => {
+      let val = attrs.hasOwnProperty(key) ? this.getAttr(key) : get(activeState, key);
+      resultState[key] = typeof val === 'function' ? val.call(this, data, index) : val;
+    });
 
-    // For each of the keys in the state, either just use
-    // the value if it's not a function; or apply the data to the function.
-    if(state) {
+    // Then, apply the overrides to the state if it's not the active state.
+    if(stateName !== 'activeState' && (state = get(this, stateName))) {
       keys(state).forEach((key, index) => {
-        let val = attrs.hasOwnProperty(key) && stateName === 'activeState' ? this.getAttr(key) : get(state, key);
-        if(typeof val === 'function') {
-          resultState[key] = val.call(this, data, index);
-        } else {
-          resultState[key] = val;
-        }
+        let val = get(state, key);
+        resultState[key] = typeof val === 'function' ? val.call(this, data, index) : val;
       });
     }
 
-    return resultState;
+    // Then, make sure that from among the required values, there is a value set.
+    let isValidState = true;
+    requiredKeys.forEach(key => {
+      let val = resultState[key];
+      if(val === undefined || val === null) {
+        isValidState = false;
+      }
+    });
+
+    if(isValidState) {
+      return resultState;
+    } else {
+      return false;
+    }
   },
 
   /*
@@ -103,7 +117,10 @@ export default Ember.Mixin.create(e3Child, {
       this.generateShadowObject(this.getType(), state);
       this.registerToContext();
       set(this, 'hasRendered', true);
+      return true
     }
+
+    return false;
   },
 
   /*
@@ -118,11 +135,9 @@ export default Ember.Mixin.create(e3Child, {
    TODO: Make sure we handle animation interruptions.
    */
   didUpdateAttrs() {
-    if(!get(this, 'hasRendered')) {
-      this.setupInitialState();
+    if(get(this, 'hasRendered') || this.setupInitialState()) {
+      scheduleOnce('afterRender', this, 'doRenderNewState');
     }
-
-    scheduleOnce('afterRender', this, 'doRenderNewState');
   },
 
   /*
@@ -130,6 +145,7 @@ export default Ember.Mixin.create(e3Child, {
    */
   doRenderNewState() {
     let resultState = this.generateState('activeState');
+
     // Only render if the state is a truthy value.
     if(resultState) {
       this.renderState(resultState);
@@ -144,10 +160,15 @@ export default Ember.Mixin.create(e3Child, {
     let shadow = get(this, 'shadow');
     let context = this.getAttr('context');
 
-    this.renderState(resultState, () => {
+    if(resultState) {
+      this.renderState(resultState, () => {
+        context.unregister(this);
+        shadow.destroy();
+      });
+    } else {
       context.unregister(this);
       shadow.destroy();
-    });
+    }
   },
 
   /*
@@ -202,8 +223,8 @@ export default Ember.Mixin.create(e3Child, {
     let animationState = get(this, 'animationState');
 
     // If there is an enter state, merge its properties with the active state.
-    set(this, 'enterState', enterState ? merge(copy(activeState), enterState) : copy(activeState));
-    set(this, 'exitState', exitState ? merge(copy(activeState), exitState) : copy(activeState));
+    set(this, 'enterState', enterState ? copy(enterState) : copy(activeState));
+    set(this, 'exitState', exitState ? copy(exitState) : copy(activeState));
 
     // Also, make sure we create a copy so these can be overwritten.
     set(this, 'activeState', copy(activeState));
