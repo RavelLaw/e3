@@ -6,11 +6,16 @@ export default Ember.Route.extend({
       let model = this.controller.get('model').slice(0);
       model.unshift(o());
       this.controller.set('model', model);
+    },
+    removeBar() {
+      let model = this.controller.get('model').slice(0);
+      model.pop();
+      this.controller.set('model', model);
     }
   },
 
   model() {
-    return g(1);
+    return g(10);
   }
 });
 
