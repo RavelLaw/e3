@@ -1,1 +1,1 @@
-export { default } from 'e3/utils/shadow/types/canvas';
+export { default } from 'ember-e3/utils/shadow/types/canvas';

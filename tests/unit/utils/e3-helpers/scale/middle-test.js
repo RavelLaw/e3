@@ -1,4 +1,4 @@
-import e3HelpersScaleMiddle from 'e3/utils/e3-helpers/scale/middle';
+import e3HelpersScaleMiddle from 'ember-e3/utils/e3-helpers/scale/middle';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | e3 helpers/scale/middle');

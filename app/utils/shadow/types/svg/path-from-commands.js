@@ -1,1 +1,1 @@
-export { default } from 'e3/utils/shadow/types/svg/path-from-commands';
+export { default } from 'ember-e3/utils/shadow/types/svg/path-from-commands';

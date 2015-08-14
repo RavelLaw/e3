@@ -1,1 +1,1 @@
-export { default } from 'e3/components/e3-shape/line';
+export { default } from 'ember-e3/components/e3-shape/line';

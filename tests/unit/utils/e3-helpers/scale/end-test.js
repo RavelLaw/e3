@@ -1,4 +1,4 @@
-import e3HelpersScaleEnd from 'e3/utils/e3-helpers/scale/end';
+import e3HelpersScaleEnd from 'ember-e3/utils/e3-helpers/scale/end';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | e3 helpers/scale/end');

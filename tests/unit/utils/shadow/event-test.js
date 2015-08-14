@@ -1,4 +1,4 @@
-import shadowEvent from 'e3/utils/shadow/event';
+import shadowEvent from 'ember-e3/utils/shadow/event';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/event');

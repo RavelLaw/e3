@@ -1,4 +1,4 @@
-import pathFromCommands from 'e3/utils/shadow/types/canvas/path-from-commands';
+import pathFromCommands from 'ember-e3/utils/shadow/types/canvas/path-from-commands';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/types/canvas/path from commands');

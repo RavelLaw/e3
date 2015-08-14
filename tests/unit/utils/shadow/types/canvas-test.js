@@ -1,4 +1,4 @@
-import shadowTypesCanvas from 'e3/utils/shadow/types/canvas';
+import shadowTypesCanvas from 'ember-e3/utils/shadow/types/canvas';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/types/canvas');

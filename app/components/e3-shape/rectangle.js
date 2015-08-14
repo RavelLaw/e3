@@ -1,1 +1,1 @@
-export { default } from 'e3/components/e3-shape/rectangle';
+export { default } from 'ember-e3/components/e3-shape/rectangle';

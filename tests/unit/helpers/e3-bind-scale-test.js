@@ -1,4 +1,4 @@
-import { e3BindScale } from 'e3/helpers/e3-bind-scale';
+import { e3BindScale } from 'ember-e3/helpers/e3-bind-scale';
 import { module, test } from 'qunit';
 
 module('Unit | Helper | e3 bind scale');

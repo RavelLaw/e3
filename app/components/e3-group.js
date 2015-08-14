@@ -1,1 +1,1 @@
-export { default } from 'e3/components/e3-group';
+export { default } from 'ember-e3/components/e3-group';

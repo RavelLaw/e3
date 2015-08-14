@@ -1,1 +1,1 @@
-export { default } from 'e3/components/e3-scale/ordinal';
+export { default } from 'ember-e3/components/e3-scale/ordinal';

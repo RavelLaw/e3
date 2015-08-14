@@ -1,4 +1,4 @@
-import pathFromCommands from 'e3/utils/shadow/types/svg/path-from-commands';
+import pathFromCommands from 'ember-e3/utils/shadow/types/svg/path-from-commands';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/types/svg/path from commands');

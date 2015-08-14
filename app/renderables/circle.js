@@ -1,1 +1,1 @@
-export { default } from 'e3/renderables/circle';
+export { default } from 'ember-e3/renderables/circle';

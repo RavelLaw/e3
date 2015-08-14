@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import E3RenderQueueMixin from 'e3/mixins/e3-render-queue';
+import E3RenderQueueMixin from 'ember-e3/mixins/e3-render-queue';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | e3 render queue');

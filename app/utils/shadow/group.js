@@ -1,1 +1,1 @@
-export { default } from 'e3/utils/shadow/group';
+export { default } from 'ember-e3/utils/shadow/group';

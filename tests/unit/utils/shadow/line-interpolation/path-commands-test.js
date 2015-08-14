@@ -1,4 +1,4 @@
-import pathCommands from 'e3/utils/shadow/line-interpolation/path-commands';
+import pathCommands from 'ember-e3/utils/shadow/line-interpolation/path-commands';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/line interpolation/path commands');

@@ -1,4 +1,4 @@
-import e3HelpersScaleStart from 'e3/utils/e3-helpers/scale/start';
+import e3HelpersScaleStart from 'ember-e3/utils/e3-helpers/scale/start';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | e3 helpers/scale/start');

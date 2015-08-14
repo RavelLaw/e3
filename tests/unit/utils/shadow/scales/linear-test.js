@@ -1,4 +1,4 @@
-import shadowScalesLinear from 'e3/utils/shadow/scales/linear';
+import shadowScalesLinear from 'ember-e3/utils/shadow/scales/linear';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/scales/linear');

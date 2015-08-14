@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import E3AnimatedChildMixin from 'e3/mixins/e3-animated-child';
+import E3AnimatedChildMixin from 'ember-e3/mixins/e3-animated-child';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | e3 animated child');

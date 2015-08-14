@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import E3MetaMixin from 'e3/mixins/e3-meta';
+import E3MetaMixin from 'ember-e3/mixins/e3-meta';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | e3 meta');

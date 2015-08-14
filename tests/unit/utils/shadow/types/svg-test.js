@@ -1,4 +1,4 @@
-import shadowTypesSvg from 'e3/utils/shadow/types/svg';
+import shadowTypesSvg from 'ember-e3/utils/shadow/types/svg';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/types/svg');

@@ -1,1 +1,1 @@
-export { default } from 'e3/utils/shadow/line-interpolation/path-commands';
+export { default } from 'ember-e3/utils/shadow/line-interpolation/path-commands';

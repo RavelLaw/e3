@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import E3ScaleMixin from 'e3/mixins/e3-scale';
+import E3ScaleMixin from 'ember-e3/mixins/e3-scale';
 import { module, test } from 'qunit';
 
 module('Unit | Mixin | e3 scale');

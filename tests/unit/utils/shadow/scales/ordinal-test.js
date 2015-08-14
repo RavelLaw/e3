@@ -1,4 +1,4 @@
-import shadowScalesOrdinal from 'e3/utils/shadow/scales/ordinal';
+import shadowScalesOrdinal from 'ember-e3/utils/shadow/scales/ordinal';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/scales/ordinal');

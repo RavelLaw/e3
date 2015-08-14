@@ -1,1 +1,1 @@
-export { default } from 'e3/utils/shadow/renderable';
+export { default } from 'ember-e3/utils/shadow/renderable';

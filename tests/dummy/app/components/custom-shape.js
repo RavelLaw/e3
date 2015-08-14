@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import e3AnimatedChild from 'e3/mixins/e3-animated-child';
+import e3AnimatedChild from 'ember-e3/mixins/e3-animated-child';
 
 export default Ember.Component.extend(e3AnimatedChild, {
   shadowType(parentContext, selfContext, attrs) {

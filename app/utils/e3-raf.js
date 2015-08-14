@@ -1,1 +1,1 @@
-export { default } from 'e3/utils/e3-raf';
+export { default } from 'ember-e3/utils/e3-raf';

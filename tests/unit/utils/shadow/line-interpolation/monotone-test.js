@@ -1,4 +1,4 @@
-import monotone from 'e3/utils/shadow/line-interpolation/monotone';
+import monotone from 'ember-e3/utils/shadow/line-interpolation/monotone';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | shadow/line interpolation/monotone');
