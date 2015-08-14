@@ -62,7 +62,13 @@ export default Ember.Mixin.create({
    do something to this.
    */
   getDomain() {
-    return this.getAttr('domain');
+    let domain =  this.getAttr('domain');
+
+    if(!isArray(domain)) {
+      domain = [0, domain];
+    }
+
+    return domain;
   },
 
   /*
