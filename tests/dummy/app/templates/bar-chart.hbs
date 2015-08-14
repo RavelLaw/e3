@@ -24,6 +24,7 @@
       width=meta.scales.x.bandWidth
       height=(e3-bind-scale meta.scales.y 'temperature')
       y=(e3-bind-scale meta.scales.y 'temperature' scaleDifference=true)
+      mouse-move='mouseMoved'
     }}
   {{/each}}
 {{/e3-container}}

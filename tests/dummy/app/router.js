@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('smooth-line-graph');
   this.route('text-sample');
   this.route('bar-chart');
+  this.route('grouped-bars');
 });
 
 export default Router;
