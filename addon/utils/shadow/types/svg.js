@@ -55,6 +55,24 @@ export default {
     return selfContext;
   },
 
+  arc(parentContext, selfContext, attrs) {
+    selfContext = preRender(selfContext, parentContext, 'path');
+    /*
+     attrs = {
+      x: {X Center},
+      y: {Y Center},
+      'start-angle': {In Radians},
+      'angle': {In Radians},
+      'inner-radius': {Defaults to 0},
+      'outer-radius': {Number}
+     }
+
+     Should accept these as arguments to construct a path array (shared with SVG);
+     Path array converts into commands...maybe pathFromCommands should support Arc commands?
+     */
+    return selfContext;
+  },
+
   stage(parentContext/*, selfContext, attrs*/) {
     return parentContext;
   },

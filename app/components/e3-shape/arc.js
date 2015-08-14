@@ -1,0 +1,1 @@
+export { default } from 'ember-e3/components/e3-shape/arc';
