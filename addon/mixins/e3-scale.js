@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const {assert} = Ember;
+const {assert, isArray} = Ember;
 const {keys} = Object;
 
 export default Ember.Mixin.create({
@@ -30,6 +30,15 @@ export default Ember.Mixin.create({
    */
   getRange() {
     let range = this.getAttr('range');
+
+    /*
+     If just a value is provided for the range, we should
+     just assume that's meant to be the max value.
+     */
+    if(!isArray(range)) {
+      range = [0, range || 1];
+    }
+
     if(this.getAttr('invert')) {
       range = range.slice(0).reverse();
     }
