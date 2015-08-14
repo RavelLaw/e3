@@ -1,39 +1,60 @@
 import Ember from 'ember';
-import layout from '../templates/components/e3-stacked-each';
-const {copy, get, set} = Ember;
-
+import layout from '../templates/components/e3-stacked-group';
+import group from './e3-group';
+const {copy, get, set, on, guidFor} = Ember;
 /*
  We should also make this inherit from the e3-group so that we can
  apply transformations to this object. Crucial for Stacked bar charts. :)
  */
-export default Ember.Component.extend({
+
+export default group.extend({
   layout: layout,
   tagName: '',
 
-  positionalParams: ['data'],
+  /*
+   The array that is iterated against that contains the original data
+   and the cumulative sums of the sum properties.
+   */
+  summedArray: null,
+
+  /*
+   An object that represents the total sum of all the objects.
+   */
+  totalObject: null,
+
+  enterState: {},
+
+  activeState: {
+    x: 0,
+    y: 0
+  },
+
+  getDataContext() {
+    return get(this, 'totalObject');
+  },
 
   attrs: {
-    data: null,
+    'start-value': 0,
     'sum-props': null
   },
 
-  summedArray: null,
-
-  didReceiveAttrs() {
+  setupSummedArray: on('didReceiveAttrs', function() {
     let result = [];
     let sums = {};
     let data = this.getAttr('data');
     let props = this.getAttr('sum-props').split(' ');
+    let startVal = this.getAttr('start-value') || 0;
 
     // Initialize the sum props.
     props.forEach(prop =>  {
-      sums[prop] = 0;
+      sums[prop] = startVal;
     });
 
     // Build the array
     data.forEach(item => {
       // Push the object.
       result.push({
+        id: guidFor(item),
         data: item,
         sum: sums
       });
@@ -52,6 +73,7 @@ export default Ember.Component.extend({
       sums = curSums;
     });
 
+    set(this, 'totalObject', sums);
     set(this, 'summedArray', result);
-  }
+  })
 });

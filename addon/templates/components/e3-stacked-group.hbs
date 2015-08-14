@@ -1,0 +1,3 @@
+{{#each summedArray key='id' as |item index|}}
+  {{yield this meta item.data item.sum index}}
+{{/each}}
