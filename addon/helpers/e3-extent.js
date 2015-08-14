@@ -12,14 +12,45 @@ const {get} = Ember;
   min-value => The minimum possible value (clips actual values lower than it)
   max-value => The maximum possible value (clips values higher than it)
   min-delta => Forces the different between the min and max to be at least a certain value.
+  nested-key => If the values are nested in an array, use this key to get the underlying values.
+  nested-sum => If we should sum those nested values, or treat them as individual extremes.
  }
  */
 export function e3Extent(params, hash) {
   let arr = params[0];
   let key = hash.key;
-  let index = -1;
+  let nestedKey = hash['nested-key'];
+  let nestedSum = hash['nested-sum'];
   let length = arr.length;
+  let index = -1;
   let result = [Infinity, -Infinity];
+
+  if(nestedKey) {
+    let nestedArr = [];
+
+    // Get the nested items.
+    while(++index < length) {
+      let parent = arr[index];
+      if(nestedSum) {
+        nestedArr.push(get(parent, nestedKey).reduce((prev, child) => {
+          return prev + (key ? get(child, key) : child);
+        }, 0));
+      } else {
+        nestedArr = nestedArr.concat(get(parent, nestedKey));
+      }
+    }
+
+    arr = nestedArr;
+
+    // We've already "used" the key in this case.
+    if(nestedSum) {
+      key = null;
+    }
+  }
+
+  // Reset index and lengths for the new array.
+  length = arr.length;
+  index = -1;
 
   // Iterate over the array and figure out min/max values.
   while(++index < length) {
