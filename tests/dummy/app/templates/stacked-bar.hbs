@@ -1,7 +1,12 @@
 <button {{action 'add'}}>Add</button>
-<button {{action 'clear'}}>Clear</button>
+<button {{action 'remove'}}>Clear</button>
+<ul>
+  <li>Temperature: {{if hoveredData hoveredData.temperature 'hover for data'}}</li>
+  <li>Value: {{if hoveredData hoveredData.value 'hover for data'}}</li>
+</ul>
+
 <br><br>
-{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
+{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
   <metadata>
     {{e3-scale/ordinal ctx 'x'
       banding=true
@@ -29,6 +34,7 @@
         width=meta.scales.x.bandWidth
         height=(e3-bind-scale meta.scales.y 'temperature')
         y=(e3-bind-scale meta.scales.y 'temperature' data=cums)
+        mouse-move='mouseMoved'
       }}
     {{/e3-stacked-group}}
   {{/each}}

@@ -32,14 +32,21 @@ export default Ember.Route.extend({
   actions: {
     add() {
       let model = this.controller.get('model');
-      model.push(o());
+      model.push(s());
+      model.push(s());
+      model.push(s());
+      model.push(s());
       this.controller.set('model', model.slice(0));
     },
-    clear() {
-      this.controller.set('model', []);
+    remove() {
+      let model = this.controller.get('model');
+      this.controller.set('model', model.slice(5));
+    },
+    mouseMoved(item) {
+      this.controller.set('hoveredData', item);
     }
   },
   model() {
-    return g(5);
+    return g(20);
   }
 });

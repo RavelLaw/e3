@@ -24,5 +24,9 @@ export default Ember.Component.extend(e3AnimatedChild, {
 
   animation: {
     duration: 300
+  },
+
+  mouseMove() {
+    this.sendAction('mouse-move', this.getAttr('data'));
   }
 });
