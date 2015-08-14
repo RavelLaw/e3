@@ -12,7 +12,7 @@
       sortProperty='value'
     }}
     {{e3-scale/linear ctx 'y'
-      domain=(e3-extent model key='temperature' padding=0.2 min-delta=5)
+      domain=(e3-extent model key='temperature' padding=0.2 min-delta=5 min=0)
       range=ctx.verticalRange
     }}
   </metadata>
@@ -20,7 +20,7 @@
   {{#each model key='id' as |data|}}
     {{bar-item ctx
       data=data
-      x=meta.scales.x
+      x=(e3-bind-scale meta.scales.x)
       width=meta.scales.x.bandWidth
       height=(e3-bind-scale meta.scales.y 'temperature')
       y=(e3-bind-scale meta.scales.y 'temperature' scaleDifference=true)

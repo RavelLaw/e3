@@ -1,23 +1,35 @@
 <button {{action 'add'}}>Add</button>
 <button {{action 'clear'}}>Clear</button>
 <br><br>
-{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
   <metadata>
-    {{e3-scale/linear ctx 'x'
-      domain=(e3-extent model key='value' padding=0.2 min-delta=5)
+    {{e3-scale/ordinal ctx 'x'
+      banding=true
+      domain=model
+      padding=0.2
+      outerPadding=10
       range=ctx.horizontalRange
+      sortProperty='value'
     }}
     {{e3-scale/linear ctx 'y'
-      domain=(e3-extent model key='temperature' padding=0.2 min-delta=5)
+      domain=(e3-extent model key='temperature' nested-key='children' nested-sum=true min-value=0)
       range=ctx.verticalRange
     }}
   </metadata>
 
-  {{#e3-stacked-each model sum-props='value temperature' as |data cums index|}}
-    {{!-- Update to use the group for the stacked each.  --}}
-    {{!e3-shape/rectangle stackCtx
-      data=data
-      y=(e3-bind-scale )
-    }}
-  {{/e3-stacked-each}}
+  {{#each model as |group|}}
+    {{#e3-stacked-group ctx
+      data=group.children
+      x=(e3-bind-scale meta.scales.x data=group)
+      y=(e3-bind-scale meta.scales.y 'temperature' scaleDifference=true)
+      sum-props='temperature' as |groupContext groupMeta data cums|}}
+      {{bar-item groupContext
+        data=data
+        x=0
+        width=meta.scales.x.bandWidth
+        height=(e3-bind-scale meta.scales.y 'temperature')
+        y=(e3-bind-scale meta.scales.y 'temperature' data=cums)
+      }}
+    {{/e3-stacked-group}}
+  {{/each}}
 {{/e3-container}}

@@ -3,9 +3,21 @@ let ID = 0;
 function g(number) {
   let res = [];
   while(--number >= 0) {
-    res.push(o());
+    res.push(s());
   }
   return res;
+}
+
+function s() {
+  let count = 3;
+  let children = [];
+  while(--count >= 0) {
+    children.push(o());
+  }
+
+  return {
+    children: children
+  };
 }
 
 function o() {
@@ -29,9 +41,5 @@ export default Ember.Route.extend({
   },
   model() {
     return g(5);
-  },
-  setupController(controller, model) {
-    window.c = this;
-    controller.set('model', model);
   }
 });

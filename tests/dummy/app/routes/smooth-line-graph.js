@@ -1,6 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  actions: {
+    addPoint() {
+      let model = this.controller.get('model').slice(0);
+      model.unshift(o());
+      this.controller.set('model', model);
+    },
+    removePoint() {
+      let model = this.controller.get('model').slice(0);
+      model.pop();
+      this.controller.set('model', model);
+    }
+  },
   model() {
     return g(20);
   }
