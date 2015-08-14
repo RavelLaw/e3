@@ -66,8 +66,11 @@ function interpolateArray(arrA, arrB, percent) {
   }
 
   // Then continue to the max length of the other arrays (if applicable)
-  for(; i < aLength; i++) {
-    result.push(arrA[i]);
+  // If we're at 100 percent, we don't care about the remaining items in A.
+  if(percent < 1) {
+    for(; i < aLength; i++) {
+      result.push(arrA[i]);
+    }
   }
 
   for(; i < bLength; i++) {
@@ -96,7 +99,10 @@ function interpolateString(valA, valB, percent) {
 
 function interpolateHexColor(valA, valB, percent) {
   let color = interpolateArray(hexToArray(valA), hexToArray(valB), percent);
-  return '#'+color.map(val => round(val).toString(16)).join('');
+  return '#'+color.map(val => {
+    let res = round(val).toString(16);
+    return res.length === 1 ? res + res : res;
+  }).join('');
 }
 
 function hexToArray(hexString) {
