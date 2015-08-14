@@ -9,6 +9,7 @@ const {get} = Ember;
  Options {
   key => the property key of where the value sits on each of the items in the array
   padding => A percent (0-1) of the found extent to be "padded" to both ends of the extent
+  sum => A flag to determine wether we should take the sum of the values.
   min-value => The minimum possible value (clips actual values lower than it)
   max-value => The maximum possible value (clips values higher than it)
   min-delta => Forces the different between the min and max to be at least a certain value.
@@ -24,6 +25,7 @@ export function e3Extent(params, hash) {
   }
 
   let key = hash.key;
+  let sum = hash['sum'];
   let nestedKey = hash['nested-key'];
   let nestedSum = hash['nested-sum'];
   let length = arr.length;
@@ -57,12 +59,23 @@ export function e3Extent(params, hash) {
   length = arr.length;
   index = -1;
 
-  // Iterate over the array and figure out min/max values.
-  while(++index < length) {
-    // If there's a key to map, get that value.
-    let cur = key ? get(arr[index], key) : arr[index];
-    result[0] = Math.min(result[0], cur);
-    result[1] = Math.max(result[1], cur);
+  if(sum) {
+    let sumVal = 0;
+    while(++index < length) {
+      let cur = key ? get(arr[index], key) : arr[index];
+      sumVal += cur;
+    }
+
+    result[0] = 0;
+    result[1] = Math.max(result[1], sumVal);
+  } else {
+    // Iterate over the array and figure out min/max values.
+    while(++index < length) {
+      // If there's a key to map, get that value.
+      let cur = key ? get(arr[index], key) : arr[index];
+      result[0] = Math.min(result[0], cur);
+      result[1] = Math.max(result[1], cur);
+    }
   }
 
   // Apply the padding.
