@@ -27,7 +27,8 @@
       data=group.children
       x=(e3-bind-scale meta.scales.x data=group)
       y=(e3-bind-scale meta.scales.y 'temperature' scaleDifference=true)
-      sum-props='temperature' as |groupContext groupMeta data cums|}}
+      sum-props='temperature'
+      as |groupContext groupMeta data cums|}}
       {{bar-item groupContext
         data=data
         x=0

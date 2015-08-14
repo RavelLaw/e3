@@ -93,6 +93,6 @@ function calculateMissingPosition(lookedUpVal, domain, sort) {
       break;
     }
   }
-  debugger;
+
   return found;
 }

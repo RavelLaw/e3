@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
 import interpolate from '../utils/e3-interpolate';
-const {get, set, merge, copy, run: {scheduleOnce}} = Ember;
+const {get, set, copy, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
 const {max, min} = Math;
 
@@ -124,7 +124,7 @@ export default Ember.Mixin.create(e3Child, {
       this.generateShadowObject(this.getType(), state);
       this.registerToContext();
       set(this, 'hasRendered', true);
-      return true
+      return true;
     }
 
     return false;
