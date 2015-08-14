@@ -3,16 +3,20 @@ const {isArray, get} = Ember;
 const {keys} = Object;
 
 export function e3BindScale(params, options) {
-  let {scaleDifference} = options;
+  let {scaleDifference, data:manualData} = options;
   let [scale, key] = params;
+
   if(scale) {
     var resultScale = function(data) {
+      data = manualData || data;
       if(isArray(data)) {
         return data.map(item => {
-          return calculateValue(get(item, key), scale, scaleDifference);
+          let val = key ? get(item, key) : item;
+          return calculateValue(val, scale, scaleDifference);
         });
       } else {
-        return calculateValue(get(data, key), scale, scaleDifference);
+        let val = key ? get(data, key) : data;
+        return calculateValue(val, scale, scaleDifference);
       }
     };
 
