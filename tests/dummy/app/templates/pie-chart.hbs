@@ -1,0 +1,28 @@
+<button {{action 'addBar'}}>Add Pie</button>
+<button {{action 'removeBar'}}>Remove Pie</button>
+<br><br>
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
+  <metadata>
+    {{e3-scale/linear ctx 'wedge'
+      domain=(e3-extent model key='temperature' sum=true)
+      range=(e3-radian-range)
+    }}
+  </metadata>
+
+  {{#e3-stacked-group ctx
+    data=model
+    x=400
+    y=200
+    sum-props='temperature'
+    as |groupContext groupMeta data cums|}}
+      {{log data cums}}
+      {{e3-shape/arc groupContext
+        data=data
+        outer-radius=150
+        inner-radius=50
+        start-angle=(e3-bind-scale meta.scales.wedge 'temperature' data=cums)
+        angle=(e3-bind-scale meta.scales.wedge 'temperature')
+        mouse-move='mouseMoved'
+      }}
+  {{/e3-stacked-group}}
+{{/e3-container}}
