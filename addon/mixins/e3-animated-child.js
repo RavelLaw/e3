@@ -55,6 +55,13 @@ export default Ember.Mixin.create(e3Child, {
   hasRendered: false,
 
   /*
+   A hook to provide the data context to calculate all the properties.
+   */
+  getDataContext() {
+    return this.getAttr('data');
+  },
+
+  /*
    Given the data and a state object, which is made up of primitives or functions,
    output the result object with all primitive values.
 
@@ -63,7 +70,7 @@ export default Ember.Mixin.create(e3Child, {
   generateState(stateName) {
     let activeState = get(this, 'activeState');
 
-    let data = this.getAttr('data');
+    let data = this.getDataContext();
     let attrs = this.get('attrs');
     let resultState = {};
     let requiredKeys = keys(activeState);
@@ -127,7 +134,7 @@ export default Ember.Mixin.create(e3Child, {
    Hook to start an animation of this object.
    */
   animateWithContext(callback) {
-    this.getAttr('context').addToQueue(callback);
+    this.getAttr('_e3Context').addToQueue(callback);
   },
 
   /*
@@ -158,7 +165,11 @@ export default Ember.Mixin.create(e3Child, {
   willDestroyElement() {
     let resultState = this.generateState('exitState');
     let shadow = get(this, 'shadow');
-    let context = this.getAttr('context');
+    let context = this.getAttr('_e3Context');
+
+    if(!shadow) {
+      return;
+    }
 
     if(resultState) {
       this.renderState(resultState, () => {

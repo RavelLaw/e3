@@ -11,7 +11,7 @@ export default Ember.Mixin.create({
   /*
    Let the context be just the first argument.
    */
-  positionalParams: ['context'],
+  positionalParams: ['_e3Context'],
 
   /*
     The name of the shadow type to lookup.
@@ -34,14 +34,14 @@ export default Ember.Mixin.create({
    Get the type
    */
   getType() {
-    return this.getAttr('context').getType();
+    return this.getAttr('_e3Context').getType();
   },
 
   /*
     Regsiter self to its parent.
    */
   registerToContext() {
-    this.getAttr('context').register(this);
+    this.getAttr('_e3Context').register(this);
   },
 
   /*
@@ -63,6 +63,6 @@ export default Ember.Mixin.create({
    Destroy the shadow object.
    */
   unregister() {
-    this.getAttr('context').unregister(this);
+    this.getAttr('_e3Context').unregister(this);
   }
 });

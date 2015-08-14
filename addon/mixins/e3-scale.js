@@ -11,7 +11,7 @@ export default Ember.Mixin.create({
   /*
    The first positional argument is the name of the scale
    */
-  positionalParams: ['context', 'name'],
+  positionalParams: ['_e3Context', 'name'],
 
   /*
    The attributes that need to be passed to this component.
@@ -51,14 +51,14 @@ export default Ember.Mixin.create({
   didRender() {
     let range = this.getRange();
     let domain = this.getDomain();
-    this.getAttr('context').updateMeta('scales', this.getAttr('name'), this._generateScale(range, domain));
+    this.getAttr('_e3Context').updateMeta('scales', this.getAttr('name'), this._generateScale(range, domain));
   },
 
   /*
    Remove this item from the container's meta hash.
    */
   willDestroyElement() {
-    this.getAttr('context').removeMeta('scales', this.getAttr('name'));
+    this.getAttr('_e3Context').removeMeta('scales', this.getAttr('name'));
   },
 
   /*
