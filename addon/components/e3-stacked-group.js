@@ -22,12 +22,6 @@ export default group.extend({
    */
   totalObject: null,
 
-  enterState: {},
-
-  activeState: {
-    x: 0,
-    y: 0
-  },
 
   getDataContext() {
     return get(this, 'totalObject');

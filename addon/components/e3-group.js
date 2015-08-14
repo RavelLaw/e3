@@ -13,6 +13,16 @@ export default Ember.Component.extend(e3AnimatedChild, meta, {
   }),
 
   /*
+   The default transformation values
+   */
+  enterState: {},
+
+  activeState: {
+    x: 0,
+    y: 0
+  },
+
+  /*
    Generate the shadow object.
    */
   generateShadowObject(contextType, attrs) {
