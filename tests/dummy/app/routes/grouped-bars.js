@@ -44,6 +44,6 @@ export default Ember.Route.extend({
     }
   },
   model() {
-    return g(5);
+    return g(10);
   }
 });

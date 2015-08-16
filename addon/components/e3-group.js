@@ -17,10 +17,7 @@ export default Ember.Component.extend(e3AnimatedChild, meta, {
    */
   enterState: {},
 
-  activeState: {
-    x: 0,
-    y: 0
-  },
+  activeState: {},
 
   /*
    Generate the shadow object.

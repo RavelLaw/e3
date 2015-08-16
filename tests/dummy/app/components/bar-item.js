@@ -23,7 +23,8 @@ export default Ember.Component.extend(e3AnimatedChild, {
   },
 
   animation: {
-    duration: 300
+    duration: 800,
+    ease: 'elastic'
   },
 
   mouseMove() {
