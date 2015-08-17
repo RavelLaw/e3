@@ -2,6 +2,7 @@ import Ember from 'ember';
 import {toArray} from '../matrix-math';
 import pathCommands from '../line-interpolation/path-commands';
 import pathFromCommands from './svg/path-from-commands';
+import arcSvgCommands from './svg/arc-svg-commands';
 import ATTRIBUTE_MAP from './svg-attribute-map';
 const {keys} = Object;
 const {copy} = Ember;
@@ -38,6 +39,8 @@ export default {
   },
 
   path(parentContext, selfContext, attrs) {
+    console.log('arcc');
+
     selfContext = preRender(selfContext, parentContext, 'path');
     // Create the 'd' string from the attrs x/y
     attrs.d = pathFromCommands(pathCommands(attrs.x, attrs.y, attrs.interpolation));
@@ -56,20 +59,18 @@ export default {
   },
 
   arc(parentContext, selfContext, attrs) {
-    selfContext = preRender(selfContext, parentContext, 'path');
-    /*
-     attrs = {
-      x: {X Center},
-      y: {Y Center},
-      'start-angle': {In Radians},
-      'angle': {In Radians},
-      'inner-radius': {Defaults to 0},
-      'outer-radius': {Number}
-     }
-
-     Should accept these as arguments to construct a path array (shared with SVG);
-     Path array converts into commands...maybe pathFromCommands should support Arc commands?
-     */
+    console.log('arcc');
+    selfContext = preRender(selfContext, parentContext, 'arc');
+    var commands = arcSvgCommands(
+      attrs.x,
+      attrs.y,
+      attrs['start-angle'],
+      attrs['angle'],
+      attrs['inner-radius'],
+      attrs['outer-radius']
+    );
+    attrs.d = pathFromCommands(commands);
+    renderAttributes('path', selfContext, attrs);
     return selfContext;
   },
 
