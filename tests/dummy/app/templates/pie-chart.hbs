@@ -8,14 +8,12 @@
       range=(e3-radian-range)
     }}
   </metadata>
-
   {{#e3-stacked-group ctx
     data=model
     x=400
     y=200
     sum-props='temperature'
     as |groupContext groupMeta data cums|}}
-      {{log data cums}}
       {{e3-shape/arc groupContext
         data=data
         outer-radius=150

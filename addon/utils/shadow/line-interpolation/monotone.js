@@ -1,4 +1,5 @@
 const {abs} = Math;
+import { Point, SmoothCurve, BezierCurve } from '../types/commands';
 
 /**
 * Returns an array of arguemnts for commands
@@ -11,7 +12,10 @@ export default function monotone(points) {
     return points;
   }
 
-  return [points[0]].concat(d3_svg_lineHermite(points, d3_svg_lineMonotoneTangents(points)));
+  var commands = [];
+  commands.push(new Point(points[0][0], points[0][1]));
+  var hermite = d3_svg_lineHermite(points, d3_svg_lineMonotoneTangents(points));
+  return commands.concat(hermite);
 }
 
 /*
@@ -90,12 +94,14 @@ function d3_svg_lineHermite(points, tangents) {
       pi = 1;
 
   if (quad) {
-    commands.push([
-      p[0] - t0[0] * 2 / 3,
-      p[1] - t0[1] * 2 / 3,
-      p[0],
-      p[1]
-    ]);
+    commands.push(
+      new SmoothCurve(
+        p[0] - t0[0] * 2 / 3,
+        p[1] - t0[1] * 2 / 3,
+        p[0],
+        p[1]
+      )
+    );
     p0 = points[1];
     pi = 2;
   }
@@ -104,14 +110,16 @@ function d3_svg_lineHermite(points, tangents) {
     t = tangents[1];
     p = points[pi];
     pi++;
-    commands.push([
-      p0[0] + t0[0],
-      p0[1] + t0[1],
-      p[0] - t[0],
-      p[1] - t[1],
-      p[0],
-      p[1]
-    ]);
+    commands.push(
+      new BezierCurve(
+        p0[0] + t0[0],
+        p0[1] + t0[1],
+        p[0] - t[0],
+        p[1] - t[1],
+        p[0],
+        p[1]
+      )
+    );
 
     for (var i = 2; i < tangents.length; i++, pi++) {
       p = points[pi];
@@ -119,25 +127,29 @@ function d3_svg_lineHermite(points, tangents) {
       let lt = tangents[i - 1];
       let lp = points[i - 1];
 
-      commands.push([
-        lp[0] + lt[0], // Add the last tangent but reflected
-        lp[1] + lt[1],
-        p[0] - t[0],
-        p[1] - t[1],
-        p[0],
-        p[1]
-      ]);
+      commands.push(
+        new BezierCurve(
+          lp[0] + lt[0], // Add the last tangent but reflected
+          lp[1] + lt[1],
+          p[0] - t[0],
+          p[1] - t[1],
+          p[0],
+          p[1]
+        )
+      );
     }
   }
 
   if (quad) {
     var lp = points[pi];
-    commands.push([
-      p[0] + t[0] * 2 / 3,
-      p[1] + t[1] * 2 / 3,
-      lp[0],
-      lp[1]
-    ]);
+    commands.push(
+      new SmoothCurve(
+        p[0] + t[0] * 2 / 3,
+        p[1] + t[1] * 2 / 3,
+        lp[0],
+        lp[1]
+      )
+    );
   }
 
   return commands;
