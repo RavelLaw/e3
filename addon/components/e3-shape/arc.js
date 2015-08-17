@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  shadowType: 'path',
+  shadowType: 'arc',
   enterState: {},
   activeState: {
     x: 0,
