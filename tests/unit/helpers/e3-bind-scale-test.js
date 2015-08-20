@@ -5,6 +5,6 @@ module('Unit | Helper | e3 bind scale');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var result = e3BindScale([]);
+  var result = e3BindScale([], {});
   assert.ok(!result, 'empty params returns falsey value');
 });

@@ -26,7 +26,7 @@ test('it works', function(assert) {
       return this.get('attrs.'+key);
     },
     attrs: {
-      context: context
+      _e3Context: context
     }
   });
 
