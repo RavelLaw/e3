@@ -1,0 +1,1 @@
+export { default } from 'ember-e3/utils/e3-ticks';
