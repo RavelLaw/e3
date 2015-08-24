@@ -3,24 +3,35 @@
 <button {{action 'clear'}}>Clear</button>
 <button {{action 'togglePaddeder'}}>{{if isPaddeder 'Paddeder!' 'Not Paddeder'}}</button>
 <br><br>
-{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
   <metadata>
     {{e3-scale/linear ctx 'x'
       domain=(e3-extent model key='value' padding=0.2 min-delta=5)
       range=ctx.horizontalRange
     }}
-    {{#if isPaddeder}}
-      {{e3-scale/linear ctx 'y'
-        domain=(e3-extent model key='temperature' padding=0.2 min-delta=5)
-        range=ctx.verticalRange
-      }}
-    {{else}}
-      {{e3-scale/linear ctx 'y'
-        domain=(e3-extent model key='temperature' padding=0.8 min-delta=5)
-        range=ctx.verticalRange
-      }}
-    {{/if}}
+    {{e3-scale/linear ctx 'y'
+      domain=(e3-extent model key='temperature' padding=yScalePadding min-delta=5)
+      range=ctx.verticalRange
+    }}
   </metadata>
+
+  {{#each (e3-ticks meta.scales.y.domain ticks=5) as |tick|}}
+    {{e3-shape/text ctx
+      data=tick
+      x=5
+      y=meta.scales.y
+      text=tick
+    }}
+  {{/each}}
+
+  {{#each (e3-ticks meta.scales.x.domain ticks=5) as |tick|}}
+    {{e3-shape/text ctx
+      data=tick
+      x=meta.scales.x
+      y=15
+      text=tick
+    }}
+  {{/each}}
 
   {{#each model as |data|}}
     {{e3-shape/circle ctx

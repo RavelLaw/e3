@@ -124,6 +124,7 @@ export default Ember.Mixin.create(e3Child, {
       this.generateShadowObject(this.getType(), state);
       this.registerToContext();
       set(this, 'hasRendered', true);
+      scheduleOnce('afterRender', this, 'doRenderNewState');
       return true;
     }
 
