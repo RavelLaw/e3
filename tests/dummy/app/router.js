@@ -13,6 +13,7 @@ Router.map(function() {
   this.route('text-sample');
   this.route('bar-chart');
   this.route('grouped-bars');
+  this.route('invert');
 });
 
 export default Router;
