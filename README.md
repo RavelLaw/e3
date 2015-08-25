@@ -20,7 +20,7 @@ Please, Ember 1.13+ only. Sorry. :(
 Also, if you want to view the examples, clone this repository, `ember server` and visit `localhost:4200` (example app is in `/tests/dummy/app/`).
 
 ## Example
-Here's an example of a scatterplot where the x position of the circle represents the year, the y position represents the temerature, and the size of the circle represents the rainfall.
+Here's an example of a scatterplot where the x position of the circle represents the year, the y position represents the temperature, and the size of the circle represents the rainfall.
 
 ```javascript
 // index/route.js
@@ -50,20 +50,21 @@ export default Ember.Route.extend({
 ```handlebars
 // index/template.hbs
 {{#e3-container type='canvas' height=400 width=800 as |context meta|}}
-  <meta>
+  <metadata>
     {{e3-scale/linear context 'x'
-      domain=(e3-extent model key='year')
+      domain=(e3-extent model key='year' padding=0.2)
       range=context.horizontalRange
     }}
     {{e3-scale/linear context 'y'
-      domain=(e3-extent model key='temperature')
+      domain=(e3-extent model key='temperature' padding=0.2)
       range=context.verticalRange
+      invert=true
     }}
-    {{e3-scale/linear context 'r'
+    {{e3-scale/linear context 'radius'
       domain=(e3-extent model key='rainfall')
-      range=context.verticalRange
+      range=(e3-fixed-range min=5 max=20)
     }}
-  </meta>
+  </metadata>
   {{#each model as |item|}}
     {{e3-shape/circle context
       data=item
