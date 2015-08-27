@@ -9,11 +9,6 @@ export default Ember.Mixin.create({
   tagName: '',
 
   /*
-   The first positional argument is the name of the scale
-   */
-  positionalParams: ['_e3Context', 'name'],
-
-  /*
    The attributes that need to be passed to this component.
    */
   attrs: {
