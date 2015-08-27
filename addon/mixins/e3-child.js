@@ -9,11 +9,6 @@ export default Ember.Mixin.create({
   tagName: '',
 
   /*
-   Let the context be just the first argument.
-   */
-  positionalParams: ['_e3Context'],
-
-  /*
     The name of the shadow type to lookup.
    */
   shadowType: null,
