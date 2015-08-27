@@ -1,8 +1,7 @@
-import Ember from 'ember';
-import scale from '../../mixins/e3-scale';
+import scale from '../e3-scale';
 import linear from '../../utils/shadow/scales/linear';
 
-export default Ember.Component.extend(scale, {
+export default scale.extend({
   name: 'linear',
 
   /*

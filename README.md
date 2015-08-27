@@ -1,4 +1,4 @@
-![Travis CI](https://travis-ci.org/RavelLaw/e3.svg)
+[![Build Status](https://travis-ci.org/RavelLaw/e3.svg?branch=master)](https://travis-ci.org/RavelLaw/e3)
 
 # E3
 

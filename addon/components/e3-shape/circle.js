@@ -1,8 +1,7 @@
-import Ember from 'ember';
-import e3AnimatedChild from '../../mixins/e3-animated-child';
+import e3AnimatedChild from '../e3-animated-child';
 import middleOfScale from '../../utils/e3-helpers/scale/middle';
 
-export default Ember.Component.extend(e3AnimatedChild, {
+export default e3AnimatedChild.extend({
   shadowType: 'circle',
 
   enterState: {
