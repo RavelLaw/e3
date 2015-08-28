@@ -14,12 +14,16 @@ function linearTickRange(extent, m = 10) {
       err = m / span * step;
 
   // Filter ticks to get closer to the desired count.
-  if (err <= .15) step *= 10;
-  else if (err <= .35) step *= 5;
-  else if (err <= .75) step *= 2;
+  if (err <= 0.15) {
+    step *= 10;
+  } else if (err <= 0.35) {
+    step *= 5;
+  } else if (err <= 0.75) {
+    step *= 2;
+  }
 
   // Round start and stop values to step interval.
-  return range(ceil(extent[0] / step) * step, floor(extent[1] / step) * step + step * .5, step);
+  return range(ceil(extent[0] / step) * step, floor(extent[1] / step) * step + step * 0.5, step);
 }
 
 function range(start, stop, step) {
@@ -30,15 +34,25 @@ function range(start, stop, step) {
       start = 0;
     }
   }
-  if ((stop - start) / step === Infinity) throw new Error("infinite range");
-  let range = [],
-       k = integerScale(abs(step)),
-       i = -1,
-       j;
+  if ((stop - start) / step === Infinity) {
+    throw new Error("infinite range");
+  }
+
+  let usedRage = [],
+    k = integerScale(abs(step)), i = -1, j;
+
   start *= k, stop *= k, step *= k;
-  if (step < 0) while ((j = start + step * ++i) > stop) range.push(j / k);
-  else while ((j = start + step * ++i) < stop) range.push(j / k);
-  return range;
+
+  if (step < 0) {
+    while ((j = start + step * ++i) > stop) {
+      usedRage.push(j / k);
+    }
+  } else {
+    while ((j = start + step * ++i) < stop) {
+      usedRage.push(j / k);
+    }
+  }
+  return usedRage;
 }
 
 function integerScale(x) {
