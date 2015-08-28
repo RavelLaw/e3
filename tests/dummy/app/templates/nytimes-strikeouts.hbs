@@ -1,0 +1,56 @@
+<select name="teams">
+  <option value="false">Choose...</option>
+  {{#each model.teams as |team|}}
+    <option value={{team.code}}>{{team.name}}</option>
+  {{/each}}
+</select>
+{{!-- kpg is strikeout/game && year --}}
+<br><br>
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
+  <metadata>
+    {{e3-scale/ordinal ctx 'x'
+      domain=(e3-unique model.outs key='year')
+      range=ctx.horizontalRange
+      outerPadding=5
+    }}
+    {{e3-scale/linear ctx 'y'
+      domain=(e3-extent model.outs key='kpg' padding=0.2 min-value=0)
+      invert=true
+      range=ctx.verticalRange
+    }}
+  </metadata>
+
+  {{!-- Grey Background Distribution Dots --}}
+  {{#e3-group ctx as |groupCtx|}}
+    {{!-- The group ensures they're rendered under the blue line. --}}
+    {{#each model.outs as |out|}}
+      {{e3-shape/circle groupCtx
+        data=out
+        x=(e3-bind-scale meta.scales.x 'year')
+        y=(e3-bind-scale meta.scales.y 'kpg')
+        radius=3
+        fill='#E4E4E4'
+      }}
+    {{/each}}
+  {{/e3-group}}
+
+  {{!-- Blue Average Line --}}
+  {{e3-shape/path ctx
+    data=model.avg
+    x=(e3-bind-scale meta.scales.x 'year')
+    y=(e3-bind-scale meta.scales.y 'avg')
+    stroke-width=1
+    stroke='#1C688F'
+  }}
+
+  {{!-- Blue Foreground Average Dots --}}
+  {{#each model.avg as |out|}}
+    {{e3-shape/circle ctx
+      data=out
+      x=(e3-bind-scale meta.scales.x 'year')
+      y=(e3-bind-scale meta.scales.y 'avg')
+      radius=3
+      fill='#1C688F'
+    }}
+  {{/each}}
+{{/e3-container}}
