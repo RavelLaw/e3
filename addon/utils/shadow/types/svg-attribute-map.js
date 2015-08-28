@@ -6,7 +6,10 @@ export default {
   'circle': {
     'radius': 'r',
     'x': 'cx',
-    'y': 'cy'
+    'y': 'cy',
+    'fill': 'fill',
+    'stroke': 'stroke',
+    'stroke-width': 'stroke-width'
   },
   'group': {
     'transform': 'transform'
