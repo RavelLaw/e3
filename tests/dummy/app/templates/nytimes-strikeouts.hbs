@@ -1,12 +1,12 @@
-<select name="teams">
-  <option value="false">Choose...</option>
+<select name="teams" onchange={{action 'pickTeam'}}>
+  <option value="">Choose...</option>
   {{#each model.teams as |team|}}
     <option value={{team.code}}>{{team.name}}</option>
   {{/each}}
 </select>
 {{!-- kpg is strikeout/game && year --}}
 <br><br>
-{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
+{{#e3-container type='canvas' height=400 width=800 as |ctx meta|}}
   <metadata>
     {{e3-scale/ordinal ctx 'x'
       domain=(e3-unique model.outs key='year')
@@ -22,7 +22,6 @@
 
   {{!-- Grey Background Distribution Dots --}}
   {{#e3-group ctx as |groupCtx|}}
-    {{!-- The group ensures they're rendered under the blue line. --}}
     {{#each model.outs as |out|}}
       {{e3-shape/circle groupCtx
         data=out
@@ -53,4 +52,25 @@
       fill='#1C688F'
     }}
   {{/each}}
+
+  {{#if activeTeamOuts}}
+    {{e3-shape/path ctx
+      data=activeTeamOuts
+      x=(e3-bind-scale meta.scales.x 'year')
+      y=(e3-bind-scale meta.scales.y 'kpg')
+      stroke-width=1
+      stroke='#FDAF33'
+    }}
+
+    {{!-- Blue Foreground Average Dots --}}
+    {{#each activeTeamOuts key='year' as |out|}}
+      {{e3-shape/circle ctx
+        data=out
+        x=(e3-bind-scale meta.scales.x 'year')
+        y=(e3-bind-scale meta.scales.y 'kpg')
+        radius=3
+        fill='#FDAF33'
+      }}
+    {{/each}}
+  {{/if}}
 {{/e3-container}}
