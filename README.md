@@ -194,7 +194,7 @@ This would render a circle and a rectangle with the same x position:
 		r=50
 	}}
 
-{{/e3-context}}
+{{/e3-group}}
 ```
 
 Because a group has its own context and meta object, you could create sub scales within a group context.
