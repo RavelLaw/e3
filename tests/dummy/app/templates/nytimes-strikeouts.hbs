@@ -16,12 +16,13 @@
     {{e3-scale/linear ctx 'y'
       domain=(e3-extent model.outs key='kpg' padding=0.2 min-value=0)
       invert=true
+      padding=10
       range=ctx.verticalRange
     }}
   </metadata>
 
   {{!-- Grey Background Distribution Dots --}}
-  {{#e3-group ctx as |groupCtx|}}
+  {{!-- {{#e3-group ctx as |groupCtx|}}
     {{#each model.outs as |out|}}
       {{e3-shape/circle groupCtx
         data=out
@@ -31,7 +32,14 @@
         fill='#E4E4E4'
       }}
     {{/each}}
-  {{/e3-group}}
+  {{/e3-group}} --}}
+
+  {{e3-shape/line ctx
+    x1=0
+    x2=500
+    y1=400.5
+    y2=400.5
+  }}
 
   {{!-- Blue Average Line --}}
   {{e3-shape/path ctx
