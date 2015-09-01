@@ -6,6 +6,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('index', { path: '/' });
   this.route('bubble-1');
   this.route('stacked-bar');
   this.route('line-graph');
