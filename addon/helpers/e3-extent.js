@@ -18,6 +18,11 @@ const {get} = Ember;
  */
 export function e3Extent(params, hash) {
   let arr = params[0];
+
+  if(!arr) {
+    return [-Infinity, Infinity];
+  }
+
   let key = hash.key;
   let nestedKey = hash['nested-key'];
   let nestedSum = hash['nested-sum'];
