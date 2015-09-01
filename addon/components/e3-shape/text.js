@@ -8,6 +8,7 @@ export default e3AnimatedChild.extend({
   activeState: {
     x: null,
     y: null,
-    text: null
+    text: null,
+    'text-align': 'start'
   }
 });

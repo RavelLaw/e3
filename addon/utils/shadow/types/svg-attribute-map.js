@@ -39,6 +39,7 @@ export default {
   },
   'text': {
     'x': 'x',
-    'y': 'y'
+    'y': 'y',
+    'text-align': 'text-anchor'
   }
 };
