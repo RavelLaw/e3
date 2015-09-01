@@ -17,9 +17,47 @@
       domain=(e3-extent model.outs key='kpg' padding=0.2 min-value=0)
       invert=true
       padding=10
+      end-offset=20
       range=ctx.verticalRange
     }}
   </metadata>
+
+  {{!-- Add the Axes --}}
+  {{#each (e3-ticks meta.scales.y.domain ticks=5) as |kpg|}}
+    {{e3-shape/line ctx
+      data=kpg
+      x1=(e3-scale-min meta.scales.x)
+      x2=(e3-scale-max meta.scales.x)
+      y1=meta.scales.y
+      y2=meta.scales.y
+      stroke='#aaaaaa'
+    }}
+  {{/each}}
+
+  {{e3-shape/line ctx
+    x1=(e3-scale-min meta.scales.x)
+    x2=(e3-scale-max meta.scales.x)
+    y1=(e3-scale-max meta.scales.y)
+    y2=(e3-scale-max meta.scales.y)
+  }}
+
+  {{#each (e3-ticks (e3-extent meta.scales.x.domain)) as |year|}}
+    {{e3-shape/line ctx
+      data=year
+      x1=meta.scales.x
+      x2=meta.scales.x
+      y1=(e3-scale-max meta.scales.y)
+      y2=(e3-scale-max meta.scales.y add=5)
+    }}
+
+    {{e3-shape/text ctx
+      data=year
+      x=meta.scales.x
+      y=(e3-scale-max meta.scales.y add=17)
+      text=year
+      text-align='middle'
+    }}
+  {{/each}}
 
   {{!-- Grey Background Distribution Dots --}}
   {{#e3-group ctx as |groupCtx|}}
@@ -33,41 +71,6 @@
       }}
     {{/each}}
   {{/e3-group}}
-
-  {{e3-shape/line ctx
-    x1=(e3-scale-min meta.scales.x)
-    x2=(e3-scale-max meta.scales.x)
-    y1=(e3-scale-max meta.scales.y minus=20)
-    y2=(e3-scale-max meta.scales.y minus=20)
-  }}
-
-  {{#each (e3-ticks (e3-extent meta.scales.x.domain)) as |year|}}
-    {{e3-shape/line ctx
-      data=year
-      x1=meta.scales.x
-      x2=meta.scales.x
-      y1=(e3-scale-max meta.scales.y minus=15)
-      y2=(e3-scale-max meta.scales.y minus=20)
-    }}
-
-    {{e3-shape/text ctx
-      data=year
-      x=meta.scales.x
-      y=(e3-scale-max meta.scales.y minus=5)
-      text=year
-    }}
-  {{/each}}
-
-  {{#each (e3-ticks meta.scales.y.domain ticks=5) as |kpg|}}
-    {{e3-shape/line ctx
-      data=kpg
-      x1=(e3-scale-min meta.scales.x)
-      x2=(e3-scale-max meta.scales.x)
-      y1=meta.scales.y
-      y2=meta.scales.y
-      stroke='#aaaaaa'
-    }}
-  {{/each}}
 
   {{!-- Blue Average Line --}}
   {{e3-shape/path ctx
