@@ -1,4 +1,6 @@
+[![npm version](https://badge.fury.io/js/ember-e3@2x.png)](http://badge.fury.io/js/ember-e3)
 [![Build Status](https://travis-ci.org/RavelLaw/e3.svg?branch=master)](https://travis-ci.org/RavelLaw/e3)
+[![Code Climate](https://codeclimate.com/github/RavelLaw/e3/badges/gpa.svg)](https://codeclimate.com/github/RavelLaw/e3)
 
 # E3
 
