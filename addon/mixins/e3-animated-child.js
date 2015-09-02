@@ -67,7 +67,8 @@ export default Ember.Mixin.create(e3Child, {
    */
   generateAnimationState() {
     let animation = get(this, 'animation');
-    let attrs = this.get('attrs');
+    let attrs = get(this, 'attrs');
+    let data = this.getAttr('data');
     let resultState = {};
 
     if(!animation) {
