@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
 import interpolate from '../utils/e3-interpolate';
+import getEasingFunction from '../utils/e3-easing';
 const {get, set, copy, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
 const {max, min} = Math;
@@ -62,6 +63,27 @@ export default Ember.Mixin.create(e3Child, {
   },
 
   /*
+   Apply the current state to the animation hash.
+   */
+  generateAnimationState() {
+    let animation = get(this, 'animation');
+    let attrs = get(this, 'attrs');
+    let data = this.getAttr('data');
+    let resultState = {};
+
+    if(!animation) {
+      return resultState;
+    }
+
+    keys(animation).forEach((key, index) => {
+      let val = attrs.hasOwnProperty(key) ? this.getAttr(key) : get(animation, key);
+      resultState[key] = typeof val === 'function' ? val.call(this, data, index) : val;
+    });
+
+    return resultState;
+  },
+
+  /*
    Given the data and a state object, which is made up of primitives or functions,
    output the result object with all primitive values.
 
@@ -73,7 +95,7 @@ export default Ember.Mixin.create(e3Child, {
     let data = this.getDataContext();
     let attrs = this.get('attrs');
     let resultState = {};
-    let requiredKeys = keys(activeState);
+    let requiredKeys = keys(activeState).concat(keys(attrs));
     let state;
 
     // First apply the values to the active state
@@ -188,8 +210,9 @@ export default Ember.Mixin.create(e3Child, {
    */
   renderState(resultState, finishedCallback) {
     let startState = get(this, '_previousState');
-    let animation = this.generateState('animation');
-    var start = null;
+    let animation = this.generateAnimationState();
+    let ease = getEasingFunction(animation.ease);
+    let start = null;
 
     // Start an animation.
     this.animateWithContext(time => {
@@ -201,7 +224,7 @@ export default Ember.Mixin.create(e3Child, {
       let percentComplete = getPercentComplete(start, time, animation.duration, animation.delay);
 
       // Get the "eased" percent complete.
-      let easePercent = ease(animation.easing, percentComplete);
+      let easePercent = ease(percentComplete);
 
       // Interpolate the current state
       let currentState = interpolate(startState, resultState, easePercent);
@@ -260,11 +283,4 @@ function getPercentComplete(startTime, currentTime, totalDuration = 200, delay =
   }
 
   return max(0, min(1, currentDuration / totalDuration));
-}
-
-/*
- Lookup the easing function and apply.
- */
-function ease(easeName, percent) {
-  return percent;
 }

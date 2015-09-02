@@ -17,10 +17,7 @@ export default e3AnimatedChild.extend(meta, {
    */
   enterState: {},
 
-  activeState: {
-    x: 0,
-    y: 0
-  },
+  activeState: {},
 
   /*
    Generate the shadow object.

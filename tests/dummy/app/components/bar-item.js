@@ -22,7 +22,8 @@ export default e3AnimatedChild.extend({
   },
 
   animation: {
-    duration: 300
+    duration: 800,
+    ease: 'elastic'
   },
 
   mouseMove() {
