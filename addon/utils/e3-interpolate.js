@@ -1,6 +1,7 @@
 import Ember from 'ember';
 const {typeOf} = Ember;
-const HEXCOLORREGEX = /^#[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}$/;
+const HEXSHORTREGEX = /^#[A-Fa-f0-9]{3}$/;
+const HEXLONGREGEX = /^#[A-Fa-f0-9]{6}$/;
 const {round, min} = Math;
 
 /*
@@ -90,7 +91,7 @@ function interpolateNumber(valA, valB, percent) {
 }
 
 function interpolateString(valA, valB, percent) {
-  if(HEXCOLORREGEX.test(valA)) {
+  if(HEXLONGREGEX.test(valA) || HEXSHORTREGEX.test(valA)) {
     return interpolateHexColor(valA, valB, percent);
   } else {
     return valB;
