@@ -38,10 +38,11 @@ function range(start, stop, step) {
     throw new Error("infinite range");
   }
 
-  let usedRage = [],
-    k = integerScale(abs(step)), i = -1, j;
+  let usedRage = [], k = integerScale(abs(step)), i = -1, j;
 
-  start *= k, stop *= k, step *= k;
+  start *= k;
+  stop *= k;
+  step *= k;
 
   if (step < 0) {
     while ((j = start + step * ++i) > stop) {
@@ -57,6 +58,8 @@ function range(start, stop, step) {
 
 function integerScale(x) {
   let k = 1;
-  while (x * k % 1) k *= 10;
+  while (x * k % 1) {
+    k *= 10;
+  }
   return k;
 }

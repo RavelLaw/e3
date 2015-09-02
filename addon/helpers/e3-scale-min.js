@@ -1,7 +1,7 @@
 import Ember from 'ember';
 const {min} = Math;
 
-export function e3ScaleMax(params, options) {
+export function e3ScaleMin(params, options) {
   let [scale] = params;
   let {minus, add} = options;
   if(scale && scale.range) {
@@ -18,4 +18,4 @@ export function e3ScaleMax(params, options) {
   }
 }
 
-export default Ember.Helper.helper(e3ScaleMax);
+export default Ember.Helper.helper(e3ScaleMin);

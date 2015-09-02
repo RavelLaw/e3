@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import e3AnimatedChild from 'ember-e3/components/e3-animated-child';
 
 export default e3AnimatedChild.extend({
