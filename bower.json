@@ -8,9 +8,9 @@
     "ember-qunit": "0.4.10",
     "ember-qunit-notifications": "0.0.7",
     "ember-resolver": "~0.1.18",
-    "jquery": "^1.11.1",
-    "loader.js": "ember-cli/loader.js#3.2.0",
-    "qunit": "~1.17.1"
+    "jquery": "^1.11.3",
+    "loader.js": "3.3.0",
+    "qunit": "~1.18.0"
   },
   "devDependencies": {
     "js.edgar": "~1.0.3"
