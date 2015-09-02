@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import scale from '../../mixins/e3-scale';
+import scale from '../e3-scale';
 import ordinal from '../../utils/shadow/scales/ordinal';
 const {get} = Ember;
 
-export default Ember.Component.extend(scale, {
+export default scale.extend({
   name: 'ordinal',
 
   /*

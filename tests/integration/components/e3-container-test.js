@@ -7,18 +7,8 @@ moduleForComponent('e3-container', 'Integration | Component | e3 container', {
 });
 
 test('it renders', function(assert) {
-  assert.expect(2);
-
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{e3-container}}`);
-
-  assert.equal(this.$().text(), '');
-
-  // Template block usage:
   this.render(hbs`
-    {{#e3-container}}
+    {{#e3-container type='svg'}}
       template block text
     {{/e3-container}}
   `);

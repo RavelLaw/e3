@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import layout from '../templates/components/e3-container';
 import Group from '../utils/shadow/group';
-import e3AnimatedChild from '../mixins/e3-animated-child';
+import e3AnimatedChild from './e3-animated-child';
 import meta from '../mixins/e3-meta';
 const {get, set, computed} = Ember;
 
-export default Ember.Component.extend(e3AnimatedChild, meta, {
+export default e3AnimatedChild.extend(meta, {
   shadowType: 'group',
   layout: layout,
   _shadowRegistrationQueue: computed(function() {
@@ -33,9 +33,9 @@ export default Ember.Component.extend(e3AnimatedChild, meta, {
     });
   },
 
-  /*
-   Since this is both a context and a child, override the behaviors.
-   */
+
+   // Since this is both a context and a child, override the behaviors.
+
   register(child) {
     let shadow = get(this, 'shadow');
     if(shadow) {

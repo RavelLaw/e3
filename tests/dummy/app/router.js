@@ -6,6 +6,7 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('index', { path: '/' });
   this.route('bubble-1');
   this.route('stacked-bar');
   this.route('line-graph');
@@ -13,6 +14,8 @@ Router.map(function() {
   this.route('text-sample');
   this.route('bar-chart');
   this.route('grouped-bars');
+  this.route('invert');
+  this.route('nytimes-strikeouts');
 });
 
 export default Router;

@@ -1,13 +1,25 @@
-<h3>Examples</h3>
+<h1 class="title"><a href="https://github.com/RavelLaw/e3" target="_blank">Ember E3</a></h1>
 
-<p>
-  {{link-to 'Bar Chart' 'bar-chart'}}
-  {{link-to 'Circles' 'stacked-bar'}}
-  {{link-to 'Line graph' 'line-graph'}}
-  {{link-to 'Smoothed line graph' 'smooth-line-graph'}}
-  {{link-to 'Stacked bars' 'stacked-bar'}}
-  {{link-to 'Grouped Bars' 'grouped-bars'}}
-  {{link-to 'Text' 'text-sample'}}
-</p>
+<div class="header">
+  <h2>Examples</h2>
 
-{{outlet}}
+  <p>
+    <button>{{link-to 'Home' 'index'}}</button>
+    <button>{{link-to 'Bar Chart' 'bar-chart'}}</button>
+    <button>{{link-to 'Circles' 'bubble-1'}}</button>
+    <button>{{link-to 'Line graph' 'line-graph'}}</button>
+    <button>{{link-to 'Smoothed line graph' 'smooth-line-graph'}}</button>
+    <button>{{link-to 'Stacked bars' 'stacked-bar'}}</button>
+    <button>{{link-to 'Grouped Bars' 'grouped-bars'}}</button>
+    <button>{{link-to 'Text' 'text-sample'}}</button>
+    <button>{{link-to 'Inverted axis' 'invert'}}</button>
+    {{!-- Can't show this yet as it dependson the mock server. Blarg. --}}
+    {{!-- <button>{{link-to 'NY Times Stikeouts' 'nytimes-strikeouts'}}</button> --}}
+  </p>
+</div>
+
+<hr>
+
+<div class="content">
+  {{outlet}}
+</div>

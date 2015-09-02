@@ -1,8 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import contextShim from '../../helpers/context-shim';
 
-
-moduleForComponent('e3-container', 'Integration | Component | e3 container', {
+moduleForComponent('e3-scale', 'Integration | Component | e3 scale', {
   integration: true
 });
 
@@ -11,16 +11,16 @@ test('it renders', function(assert) {
 
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
+  this.set('context', contextShim());
+  this.render(hbs`{{e3-scale context}}`);
 
-  this.render(hbs`{{e3-container}}`);
-
-  assert.equal(this.$().text(), '');
+  assert.equal(this.$().text().trim(), '');
 
   // Template block usage:
   this.render(hbs`
-    {{#e3-container}}
+    {{#e3-scale context}}
       template block text
-    {{/e3-container}}
+    {{/e3-scale}}
   `);
 
   assert.equal(this.$().text().trim(), 'template block text');
