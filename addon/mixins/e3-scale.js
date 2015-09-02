@@ -16,7 +16,9 @@ export default Ember.Mixin.create({
     name: null,
     range: null,
     domain: null,
-    invert: false
+    invert: false,
+    'start-offset': 0,
+    'end-offset': 0
   },
 
   /*
@@ -25,6 +27,8 @@ export default Ember.Mixin.create({
    */
   getRange() {
     let range = this.getAttr('range');
+    let startOffset = this.getAttr('start-offset');
+    let endOffset = this.getAttr('end-offset');
 
     /*
      If just a value is provided for the range, we should
@@ -34,9 +38,22 @@ export default Ember.Mixin.create({
       range = [0, range || 1];
     }
 
+    // If there are offsets provided (to give space for things like axes),
+    // apply those to the range.
+    if(startOffset) {
+      range[0] = range[0] + startOffset;
+    }
+
+    if(endOffset) {
+      console.log(range[1], range);
+      range[1] = range[1] - endOffset;
+    }
+
+    // Reverse the range as necessart
     if(this.getAttr('invert')) {
       range = range.slice(0).reverse();
     }
+
     return range;
   },
 

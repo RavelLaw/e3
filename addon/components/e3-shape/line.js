@@ -3,26 +3,16 @@ import e3AnimatedChild from '../e3-animated-child';
 export default e3AnimatedChild.extend({
   shadowType: 'line',
 
-  enterState: {
-    x1: 0,
-    x2: 0,
-    y1: 0,
-    y2: 0
-  },
+  enterState: {},
 
-  exitState: {
-    x1: 0,
-    x2: 0,
-    y1: 0,
-    y2: 0
-  },
+  exitState: {},
 
   activeState: {
     x1: 0,
     x2: 0,
     y1: 100,
     y2: 100,
-    'stroke': 'orange',
-    'stroke-width': 5
+    'stroke': '#000000',
+    'stroke-width': 1
   }
 });
