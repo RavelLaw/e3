@@ -2,7 +2,7 @@ const EASING = {
   'ease-in-cubic': function(percent) {
     return Math.pow(percent, 3);
   },
-  'elastic': function(percent) {
+  elastic(percent) {
     var p = 0.3;
     return Math.pow(2,-10*percent) * Math.sin((percent-p/4)*(2*Math.PI)/p) + 1;
   },
