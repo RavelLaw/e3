@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import e3AnimatedChild from 'ember-e3/mixins/e3-animated-child';
+import e3AnimatedChild from 'ember-e3/components/e3-animated-child';
 
-export default Ember.Component.extend(e3AnimatedChild, {
+export default e3AnimatedChild.extend({
   shadowType(parentContext, selfContext, attrs) {
     parentContext.beginPath();
     parentContext.arc(attrs.x, attrs.y, attrs.radius, 0, 2 * Math.PI);
