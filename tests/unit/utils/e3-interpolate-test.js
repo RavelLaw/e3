@@ -36,3 +36,7 @@ test('interpolate hexadecimal colors', function(assert) {
   assert.equal(e3Interpolate('#000','#fff',0.5), '#808080');
   assert.equal(e3Interpolate('#000000','#ffffff',0.5), '#808080');
 });
+
+test('do not interpolate hex like strings', function(assert) {
+  assert.equal(e3Interpolate('92.44F', '92.44F', 0.5), '92.44F');
+});

@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import e3AnimatedChild from 'ember-e3/components/e3-animated-child';
 import scaleEnd from 'ember-e3/utils/e3-helpers/scale/end';
 let colors = ['#AA2222', '#22AA22', '#2222AA'];
