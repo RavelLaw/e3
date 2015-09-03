@@ -19,9 +19,12 @@ ember install ember-e3
 
 Please, Ember 1.13+ only. Sorry. :(
 
-Also, if you want to view the examples, clone this repository, `ember server` and visit `localhost:4200` (example app is in `/tests/dummy/app/`).
+## Examples
 
-## Example
+Live examples are [available for your perusal](http://ravellaw.github.io/e3/). If you want to view the examples locally, clone this repository, `ember server` and visit `localhost:4200` (example app is in `/tests/dummy/app/`).
+
+[![E3 at the SF Ember.js meetup](http://img.youtube.com/vi/9lXQ024NoRc/0.jpg)](http://www.youtube.com/watch?v=9lXQ024NoRc)
+
 Here's an example of a scatterplot where the x position of the circle represents the year, the y position represents the temperature, and the size of the circle represents the rainfall.
 
 ```javascript
