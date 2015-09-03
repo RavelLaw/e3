@@ -39,8 +39,6 @@ export default {
   },
 
   path(parentContext, selfContext, attrs) {
-    console.log('arcc');
-
     selfContext = preRender(selfContext, parentContext, 'path');
     // Create the 'd' string from the attrs x/y
     attrs.d = pathFromCommands(pathCommands(attrs.x, attrs.y, attrs.interpolation));
@@ -59,8 +57,7 @@ export default {
   },
 
   arc(parentContext, selfContext, attrs) {
-    console.log('arcc');
-    selfContext = preRender(selfContext, parentContext, 'arc');
+    selfContext = preRender(selfContext, parentContext, 'path');
     var commands = arcSvgCommands(
       attrs.x,
       attrs.y,

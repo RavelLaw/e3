@@ -1,4 +1,4 @@
-const {pi} = Math;
+const {PI} = Math;
 import { Line, Move, Arc, Close } from '../commands';
 
 /*
@@ -8,7 +8,8 @@ import { Line, Move, Arc, Close } from '../commands';
  */
 export default function arcSvgCommands(x, y, startAngle, angle, innerRadius, outerRadius) {
 
-  var r0 = Math.max(0, +innerRadius),
+  var pi = PI,
+      r0 = Math.max(0, +innerRadius),
       r1 = Math.max(0, +outerRadius),
       a0 = startAngle - pi / 2,
       a1 = (startAngle + angle) - pi / 2,
@@ -86,12 +87,12 @@ export default function arcSvgCommands(x, y, startAngle, angle, innerRadius, out
 
   commands.push(new Move(x, y));
   if (x1 != null) {
-    commands.push(new Arc(r1, r1, l1, cw, x1, y1));
+    commands.push(new Arc(r1, r1, 0, l1, cw, x1, y1));
   }
 
   commands.push(new Line(x2, y2));
   if (x3 != null) {
-    commands.push(new Arc(r0, r0, l0, 1 - cw, x3, y3));
+    commands.push(new Arc(r0, r0, 0, l0, 1 - cw, x3, y3));
   }
 
   commands.push(new Close());
