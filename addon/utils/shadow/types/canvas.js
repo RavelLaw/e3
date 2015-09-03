@@ -49,6 +49,25 @@ export default {
     return parentContext;
   },
 
+  arc(parentContext, selfContext, attrs, matrix) {
+    preShape(parentContext, attrs, matrix);
+    /*
+     attrs = {
+      x: {X Center},
+      y: {Y Center},
+      'start-angle': {In Radians},
+      'angle': {In Radians},
+      'inner-radius': {Defaults to 0},
+      'outer-radius': {Number}
+     }
+
+     Should accept these as arguments to construct a path array (shared with SVG);
+     Path array converts into commands...maybe pathFromCommands should support Arc commands?
+     */
+    postShape(parentContext, attrs, matrix);
+    return parentContext;
+  },
+
   stage(parentContext, selfContext, attrs) {
     if(!selfContext) {
       selfContext = parentContext.getContext('2d');

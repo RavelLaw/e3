@@ -1,4 +1,5 @@
 import monotone from './monotone';
+import { Point } from './monotone';
 
 export default function generatePath(xPoints, yPoints, interpolation = 'linear') {
 
@@ -6,7 +7,9 @@ export default function generatePath(xPoints, yPoints, interpolation = 'linear')
   var commands;
   switch(interpolation) {
     case 'linear':
-      commands = points;
+      commands = points.map(point => {
+        return new Point(point[0], point[1]);
+      });
       break;
     case 'monotone':
       commands = monotone(points);

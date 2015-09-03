@@ -30,6 +30,14 @@ test('handle options', function(assert) {
   assert.deepEqual(result, [-1.5,8.5]);
 });
 
+test('get data extent of sum', function(assert) {
+  let result = e3Extent([[1,2,3,4,5]], {sum: true});
+  assert.deepEqual(result, [0, 15]);
+
+  result = e3Extent([[{val:1},{val:100},{val:20},{val:5}]], {key :'val', sum: true});
+  assert.deepEqual(result, [0,126]);
+});
+
 test('nested data', function(assert) {
   let result = e3Extent([[
     {

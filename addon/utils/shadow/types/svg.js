@@ -2,6 +2,7 @@ import Ember from 'ember';
 import {toArray} from '../matrix-math';
 import pathCommands from '../line-interpolation/path-commands';
 import pathFromCommands from './svg/path-from-commands';
+import arcSvgCommands from './svg/arc-svg-commands';
 import ATTRIBUTE_MAP from './svg-attribute-map';
 const {keys} = Object;
 const {copy} = Ember;
@@ -52,6 +53,21 @@ export default {
     attrs = copy(attrs);
     renderAttributes('text', selfContext, attrs);
     selfContext.textContent = attrs.text;
+    return selfContext;
+  },
+
+  arc(parentContext, selfContext, attrs) {
+    selfContext = preRender(selfContext, parentContext, 'path');
+    var commands = arcSvgCommands(
+      attrs.x,
+      attrs.y,
+      attrs['start-angle'],
+      attrs['angle'],
+      attrs['inner-radius'],
+      attrs['outer-radius']
+    );
+    attrs.d = pathFromCommands(commands);
+    renderAttributes('path', selfContext, attrs);
     return selfContext;
   },
 
