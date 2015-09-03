@@ -29,11 +29,14 @@ canvas {
   margin: auto;
 }
 
-button {
+span.button {
   padding: 5px;
   margin: 3px;
+  cursor: pointer;
+  background: rgb(240,240,240);
+  border: 1px solid grey;
 }
 
-button a {
+span.button a {
   text-decoration: none;
 }
