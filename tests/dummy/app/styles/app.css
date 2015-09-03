@@ -24,6 +24,10 @@ body {
   max-width: 1000px;
 }
 
+.container .intro-video {
+  margin: 4em;
+}
+
 canvas {
   display: flex;
   margin: auto;
