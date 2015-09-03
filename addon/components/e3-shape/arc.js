@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import e3AnimatedChild from '../e3-animated-child';
 
-export default Ember.Component.extend({
+export default e3AnimatedChild.extend({
   shadowType: 'arc',
   enterState: {},
   activeState: {

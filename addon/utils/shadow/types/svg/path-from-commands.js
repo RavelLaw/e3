@@ -1,19 +1,37 @@
+import { Move, Line, Point, Arc, SmoothCurve, BezierCurve } from '../commands';
+
 export default function pathFromCommands(commands) {
   let svgCommands = commands.map((command, i) => {
-    let name = '';
-    if (command.length === 2) {
-      name = i === 0 ? 'M' : 'L';
+
+    if (command instanceof Point) {
+      return (i === 0 ? 'M' : 'L') + command.x + command.y;
     }
 
-    if (command.length === 4) {
-      name = 'S';
+    if (command instanceof Move) {
+      return 'M' + command.x + command.y;
     }
 
-    if (command.length === 6) {
-      name = 'C';
+    if (command instanceof Line) {
+      return 'L' + command.x + command.y;
     }
 
-    return name + command.join(',');
+    if (command instanceof SmoothCurve) {
+      return 'S' + command.x2 + command.y2 + command.x + command.y;
+    }
+
+    if (command instanceof BezierCurve) {
+      return 'C' + command.x1 + command.y1 +
+                   command.x2 + command.y2 +
+                   command.x  + command.y;
+    }
+
+    if (command instanceof Arc) {
+      return 'A' + command.rx + command.ry +
+                   command.xAxisRotation +
+                   command.largeArcFlag +
+                   command.sweepFlag +
+                   command.x  + command.y;
+    }
   });
 
   return svgCommands.join(' ');
