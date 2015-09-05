@@ -48,6 +48,7 @@
     "ember-cli-htmlbars": "^1.0.0"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "https://ravellaw.github.io/e3"
   }
 }
