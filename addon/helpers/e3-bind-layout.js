@@ -15,7 +15,6 @@ export function e3BindLayout(params/*, hash*/) {
   if(layout) {
     return function(data) {
       let itemLayout = layout(data);
-      console.log(itemLayout);
       if(itemLayout) {
         return itemLayout[layoutProp];
       }

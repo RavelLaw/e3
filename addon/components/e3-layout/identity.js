@@ -1,10 +1,8 @@
-import Ember from 'ember';
 import layout from '../e3-layout';
-
 
 /*
  This is more or less a utility layout that will take x & y scales and
- create a layour for objects based on that layout.
+ create a layout for objects based on that layout.
  */
 export default layout.extend({
   name: 'identity',

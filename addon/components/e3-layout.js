@@ -1,6 +1,6 @@
 import Ember from 'ember';
 const {guidFor} = Ember;
-let stop = 0;
+
 let e3Layout = Ember.Component.extend({
   tagName: '',
 
@@ -62,7 +62,7 @@ let e3Layout = Ember.Component.extend({
     };
   },
 
-  generateItemLayout(data) {}
+  generateItemLayout(/*data*/) {}
 });
 
 e3Layout.reopenClass({
