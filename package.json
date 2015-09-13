@@ -11,7 +11,10 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "https://github.com/RavelLaw/e3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RavelLaw/e3.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
