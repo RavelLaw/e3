@@ -1,0 +1,13 @@
+{{#e3-container type='svg' height=500 width=1000 as |ctx meta|}}
+
+  {{#e3-collection ctx model as |collectionContext item|}}
+    {{e3-shape/circle collectionContext
+      data=item
+      x=200
+      y=200
+      radius=10
+      fill='#E4E4E4'
+    }}
+  {{/e3-collection}}
+
+{{/e3-container}}
