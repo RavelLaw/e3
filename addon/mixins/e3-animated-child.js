@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
 import interpolate from '../utils/e3-interpolate';
-import getEasingFunction from '../utils/e3-easing';
+import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
 const {get, set, copy, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
-const {max, min} = Math;
+
 
 export default Ember.Mixin.create(e3Child, {
   /*
@@ -65,10 +65,10 @@ export default Ember.Mixin.create(e3Child, {
   /*
    Apply the current state to the animation hash.
    */
-  generateAnimationState() {
+  generateAnimationState(dataContext = null) {
     let animation = get(this, 'animation');
     let attrs = get(this, 'attrs');
-    let data = this.getAttr('data');
+    let data = dataContext || this.getAttr('data');
     let resultState = {};
 
     if(!animation) {
@@ -89,10 +89,10 @@ export default Ember.Mixin.create(e3Child, {
 
    Also, if there was an attribute set with the same name directly, use that instead.
    */
-  generateState(stateName) {
+  generateState(stateName, dataContext = null) {
     let activeState = get(this, 'activeState');
 
-    let data = this.getDataContext();
+    let data = dataContext || this.getDataContext();
     let attrs = this.get('attrs');
     let resultState = {};
     let requiredKeys = keys(activeState).concat(keys(attrs));
@@ -270,17 +270,3 @@ export default Ember.Mixin.create(e3Child, {
     this._super();
   }
 });
-
-/*
- Calculate the percentage complete based on the times/delays.
- */
-function getPercentComplete(startTime, currentTime, totalDuration = 200, delay = 0) {
-  let currentDuration = currentTime - delay - startTime;
-
-  // This should only happen if there's a delay.
-  if(currentDuration < 0) {
-    return 0;
-  }
-
-  return max(0, min(1, currentDuration / totalDuration));
-}
