@@ -205,3 +205,77 @@ This would render a circle and a rectangle with the same x position:
 ```
 
 Because a group has its own context and meta object, you could create sub scales within a group context.
+
+### e3-Collection
+In some cases, you may be interested in rendering a fairly significant number of discrete items — but you'll find that the overhead with Ember's `#each` helper makes the initial render performance of thousands of items very slow. (In non-scientific tests, using `e3-collection` resulted in a 25x increase in initial render performance). 
+
+In this situation, you should use `#e3-collection` as a semi drop-in replacement for the each helper. 
+
+This example...
+
+```handlebars
+{{#each model as |item|}}
+	{{e3-shape/circle ctx data=item}}
+{{/each}}
+```
+
+...would become...
+
+```handlebars
+{{#e3-collection ctx model as |collectionCtx item|}}
+	{{e3-shape/circle collectionCtx data=item}}
+{{/e3-collection}}
+```
+
+Underneath, the `e3-collection` component is only yielding the first item in the array, and uses the lifecycle events to capture and recreates the result for each of the items in the array. 
+
+This means that there is only **one** instance of the `e3-shape/circle` component ever created. 
+
+There's a few consequences of this to be aware of:
+
+*You cannot bind properties from the `item` directly; instead, you'll need to use the `e3-property` helper instead.*
+
+This:
+
+```handlebars
+{{e3-shape/circle collectionCtx 
+	data=item
+	fill=item.color
+}}
+```
+
+...becomes this:
+
+```handlebars
+{{e3-shape/circle collectionCtx 
+	data=item
+	fill=(e3-property 'color')
+}}
+```
+
+*Event handlers that are added on the component are passed data as a second argument*
+
+So, this:
+
+```javascript
+import circle from 'ember-e3/components/e3-shape/circle';
+export default circle.extend({
+  click() {
+    this.sendAction('handle-click', this.getAttr('data'));
+  }
+});
+```
+
+...becomes...
+
+```javascript
+import circle from 'ember-e3/components/e3-shape/circle';
+export default circle.extend({
+  click(event, data) {
+    this.sendAction('handle-click', data);
+  }
+});
+```
+
+
+
