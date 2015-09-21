@@ -5,6 +5,12 @@
   {{#if showCircles}}Showing{{else}}Hiding{{/if}}
 </button>
 <br>
+{{#if hoveredObject}}
+  <p>
+    Hovering on: (id: {{hoveredObject.id}}, x: {{hoveredObject.x}}, y: {{hoveredObject.y}})
+  </p>
+{{/if}}
+<br>
 {{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
   <metadata>
     {{e3-scale/linear ctx 'x'
@@ -26,6 +32,7 @@
         x=(e3-bind-scale meta.scales.x 'x')
         y=(e3-bind-scale meta.scales.y 'y')
         radius=15
+        on-hover='hoverObject'
         fill='#E4E4E4'
       }}
     {{else}}

@@ -26,6 +26,9 @@ export default Ember.Route.extend({
     },
     toggleShow() {
       this.controller.toggleProperty('showCircles');
+    },
+    hoverObject(obj) {
+      this.controller.set('hoveredObject', obj);
     }
   },
   model() {
