@@ -16,17 +16,20 @@ function generate(x = 100) {
 export default Ember.Route.extend({
   actions: {
     change() {
-      this.controller.set('model', generate(50))
+      this.controller.set('model', generate(2))
+    },
+    change2() {
+      this.controller.set('model', generate(3))
+    },
+    togglePaddeder() {
+      this.controller.set('yScalePadding', Math.random()*0.5);
     }
   },
   model() {
-    return generate(5000);
+    return generate(5);
   },
-  setupController() {
+  setupController(controller) {
+    controller.set('yScalePadding', 0);
     this._super.apply(this, arguments);
-    console.time('TEST');
-    Ember.run.scheduleOnce('afterRender', () => {
-      console.timeEnd('TEST');
-    });
   }
 });

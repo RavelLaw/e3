@@ -32,7 +32,6 @@ export default Ember.Route.extend({
     return g(10);
   },
   setupController(controller, model) {
-    window.c = this;
     controller.set('model', model);
   }
 });

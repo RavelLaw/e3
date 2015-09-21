@@ -1,14 +1,18 @@
 <button {{action 'change'}}>Change.</button>
+<button {{action 'change2'}}>Change2.</button>
+<button {{action 'togglePaddeder'}}>{{if isPaddeder 'Paddeder!' 'Not Paddeder'}}</button>
 <br>
-{{#e3-container type='svg' height=800 width=800 as |ctx meta|}}
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
   <metadata>
     {{e3-scale/linear ctx 'x'
       domain=(e3-extent model key='x' padding=0.2 min-delta=5)
       range=ctx.horizontalRange
+      padding=10
     }}
     {{e3-scale/linear ctx 'y'
       domain=(e3-extent model key='y' padding=yScalePadding min-delta=5)
       range=ctx.verticalRange
+      padding=10
     }}
   </metadata>
 
@@ -17,7 +21,7 @@
       data=item
       x=(e3-bind-scale meta.scales.x 'x')
       y=(e3-bind-scale meta.scales.y 'y')
-      radius=3
+      radius=15
       fill='#E4E4E4'
     }}
   {{/e3-collection}}
