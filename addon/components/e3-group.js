@@ -54,7 +54,7 @@ export default e3AnimatedChild.extend(meta, {
     }
   },
 
-  addToQueue(callback) {
-    return this.getAttr('_e3Context').addToQueue(callback);
+  animateTo(component, resultState, animation, finishedCallback) {
+    return this.getAttr('_e3Context').animateTo(component, resultState, animation, finishedCallback);
   }
 });

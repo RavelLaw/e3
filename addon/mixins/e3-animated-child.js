@@ -2,7 +2,7 @@ import Ember from 'ember';
 import e3Child from './e3-child';
 import interpolate from '../utils/e3-interpolate';
 import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
-const {get, set, copy, run: {scheduleOnce}} = Ember;
+const {get, set, copy, tryInvoke, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
 
 
@@ -154,13 +154,6 @@ export default Ember.Mixin.create(e3Child, {
   },
 
   /*
-   Hook to start an animation of this object.
-   */
-  animateWithContext(callback) {
-    this.getAttr('_e3Context').addToQueue(callback);
-  },
-
-  /*
    Whenever the did render hook runs, start an animation to update the shadow object.
    TODO: Make sure we handle animation interruptions.
    */
@@ -168,6 +161,8 @@ export default Ember.Mixin.create(e3Child, {
     if(get(this, 'hasRendered') || this.setupInitialState()) {
       scheduleOnce('afterRender', this, 'doRenderNewState');
     }
+
+    tryInvoke(get(this, '_e3Context'), 'childDidUpdateAttrs');
   },
 
   /*
@@ -178,7 +173,7 @@ export default Ember.Mixin.create(e3Child, {
 
     // Only render if the state is a truthy value.
     if(resultState) {
-      this.renderState(resultState);
+      this.triggerAnimateTo(resultState);
     }
   },
 
@@ -195,7 +190,7 @@ export default Ember.Mixin.create(e3Child, {
     }
 
     if(resultState) {
-      this.renderState(resultState, () => {
+      this.triggerAnimateTo(resultState, () => {
         context.unregister(this);
         shadow.destroy();
       });
@@ -208,43 +203,9 @@ export default Ember.Mixin.create(e3Child, {
   /*
    Render State
    */
-  renderState(resultState, finishedCallback) {
-    let startState = get(this, '_previousState');
+  triggerAnimateTo(resultState, finishedCallback) {
     let animation = this.generateAnimationState();
-    let ease = getEasingFunction(animation.ease);
-    let start = null;
-
-    // Start an animation.
-    this.animateWithContext(time => {
-      if(start === null) {
-        start = time;
-      }
-
-      // Get the overall percent complete.
-      let percentComplete = getPercentComplete(start, time, animation.duration, animation.delay);
-
-      // Get the "eased" percent complete.
-      let easePercent = ease(percentComplete);
-
-      // Interpolate the current state
-      let currentState = interpolate(startState, resultState, easePercent);
-
-      // Save this current state.
-      this._previousState = currentState;
-
-      // Then, lastly, apply the attributes to the shadow object.
-      this.updateShadowObject(currentState);
-
-      // If we're done, let the animation queue know.
-      if(percentComplete >= 1) {
-        if(finishedCallback) {
-          finishedCallback(this);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    });
+    this.getAttr('_e3Context').animateTo(this, resultState, animation, finishedCallback);
   },
 
   /*

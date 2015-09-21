@@ -2,13 +2,13 @@ import Ember from 'ember';
 import layout from '../templates/components/e3-collection';
 import Renderable from '../utils/shadow/renderable';
 import calculateChanges from '../utils/e3-calculate-changes';
-import interpolate from '../utils/e3-interpolate';
-import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
+// import interpolate from '../utils/e3-interpolate';
+// import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
 
 const {keys} = Object;
 const {
   get, set, computed, guidFor,
-  run: {once}
+  run: {scheduleOnce}
 } = Ember;
 
 let e3Collection = Ember.Component.extend({
@@ -72,25 +72,21 @@ let e3Collection = Ember.Component.extend({
     }
   },
 
+  childDidUpdateAttrs() {
+    this.queueProcessing();
+  },
+
   registerPseudoComponent(pseudoComponent) {
     this.getAttr('_e3Context').register(pseudoComponent);
   },
 
-  /*
-   Prevent any registered components from attempting to animate.
-   */
-  addToQueue() {},
-
-  /*
-   Animate an object.
-   */
-  animateWithContext(callback) {
-    this.getAttr('_e3Context').addToQueue(callback);
+  unregisterPseudoComponent(pseudoComponent) {
+    this.getAttr('_e3Context').unregister(pseudoComponent);
   },
 
 
   queueProcessing() {
-    once(this, 'processIterable');
+    scheduleOnce('afterRender', this, 'processIterable');
   },
 
   /*
@@ -128,6 +124,8 @@ let e3Collection = Ember.Component.extend({
         // Save this shadow as a child.
         let pseudoComponent = {
           _previousState: enterState,
+          lastData: data,
+          guid: guid,
           shadow: this.generateShadowObject(component, type, enterState)
         };
 
@@ -137,13 +135,14 @@ let e3Collection = Ember.Component.extend({
 
       // For the leaving items, animate them out.
       exit.forEach(guid => {
-        let data = iterableMap[guid];
-        let child = children[guid];
+        let pseudoComponent = children[guid];
+        let data = pseudoComponent.lastData;
         let exitState = component.generateState('exitState', data);
         let animation = component.generateAnimationState(data);
 
-        this.renderState(child, exitState, animation, () => {
-          child.shadow.destroy();
+        this.triggerAnimateTo(pseudoComponent, exitState, animation, () => {
+          this.unregisterPseudoComponent(pseudoComponent);
+          pseudoComponent.shadow.destroy();
           delete children[guid];
         });
       });
@@ -153,47 +152,14 @@ let e3Collection = Ember.Component.extend({
         let child = children[guid];
         let activeState = component.generateState('activeState', data);
         let animation = component.generateAnimationState(data);
-
-        this.renderState(child, activeState, animation);
+        child.lastData = data;
+        this.triggerAnimateTo(child, activeState, animation);
       });
     });
   },
 
-  renderState(pseudoComponent, resultState, animation, finishedCallback) {
-    let startState = get(pseudoComponent, '_previousState');
-    let ease = getEasingFunction(animation.ease);
-    let start = null;
-
-    this.animateWithContext(time => {
-      if(start === null) {
-        start = time;
-      }
-
-      // Get the overall percent complete.
-      let percentComplete = getPercentComplete(start, time, animation.duration, animation.delay);
-
-      // Get the "eased" percent complete.
-      let easePercent = ease(percentComplete);
-
-      // Interpolate the current state
-      let currentState = interpolate(startState, resultState, easePercent);
-
-      // Save the current state
-      pseudoComponent._previousState = currentState;
-
-      // Update the shadown's attributes
-      pseudoComponent.shadow.setAttributes(currentState);
-
-      // If we're done, let the animation queue know.
-      if(percentComplete >= 1) {
-        if(finishedCallback) {
-          finishedCallback(this);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    });
+  triggerAnimateTo(pseudoComponent, resultState, animation, finishedCallback) {
+    this.getAttr('_e3Context').animateTo(pseudoComponent, resultState, animation, finishedCallback);
   },
 
 

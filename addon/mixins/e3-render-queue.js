@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import raf from '../utils/e3-raf';
+import interpolate from '../utils/e3-interpolate';
+import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
 const {get, set, computed, Evented} = Ember;
 const RAF = raf();
 
@@ -48,6 +50,47 @@ export default Ember.Mixin.create(Evented, {
       this.trigger('animationWillStart');
       this._animate();
     }
+  },
+
+  /*
+   Hook to initiate a component render.
+   */
+  animateTo(component, resultState, animation, finishedCallback) {
+    let startState = get(component, '_previousState');
+    let shadow = get(component, 'shadow');
+    let ease = getEasingFunction(animation.ease);
+    let start = null;
+
+    this.addToQueue(time => {
+      if(start === null) {
+        start = time;
+      }
+
+      // Get the overall percent complete.
+      let percentComplete = getPercentComplete(start, time, animation.duration, animation.delay);
+
+      // Get the "eased" percent complete.
+      let easePercent = ease(percentComplete);
+
+      // Interpolate the current state
+      let currentState = interpolate(startState, resultState, easePercent);
+
+      // Save the current state
+      component._previousState = currentState;
+
+      // Update the shadown's attributes
+      shadow.setAttributes(currentState);
+
+      // If we're done, let the animation queue know.
+      if(percentComplete >= 1) {
+        if(finishedCallback) {
+          finishedCallback(this);
+        }
+        return true;
+      } else {
+        return false;
+      }
+    });
   },
 
   /*
