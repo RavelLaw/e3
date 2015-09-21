@@ -23,6 +23,9 @@ export default Ember.Route.extend({
     },
     togglePaddeder() {
       this.controller.set('yScalePadding', Math.random()*0.5);
+    },
+    toggleShow() {
+      this.controller.toggleProperty('showCircles');
     }
   },
   model() {
@@ -30,6 +33,7 @@ export default Ember.Route.extend({
   },
   setupController(controller) {
     controller.set('yScalePadding', 0);
+    controller.set('showCircles', true);
     this._super.apply(this, arguments);
   }
 });

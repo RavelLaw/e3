@@ -1,6 +1,9 @@
 <button {{action 'change'}}>Change.</button>
 <button {{action 'change2'}}>Change2.</button>
 <button {{action 'togglePaddeder'}}>{{if isPaddeder 'Paddeder!' 'Not Paddeder'}}</button>
+<button {{action 'toggleShow'}}>
+  {{#if showCircles}}Showing{{else}}Hiding{{/if}}
+</button>
 <br>
 {{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
   <metadata>
@@ -17,13 +20,32 @@
   </metadata>
 
   {{#e3-collection ctx model key='id' as |collectionContext item|}}
-    {{e3-shape/circle collectionContext
-      data=item
-      x=(e3-bind-scale meta.scales.x 'x')
-      y=(e3-bind-scale meta.scales.y 'y')
-      radius=15
-      fill='#E4E4E4'
-    }}
+    {{#if showCircles}}
+      {{e3-shape/circle collectionContext
+        data=item
+        x=(e3-bind-scale meta.scales.x 'x')
+        y=(e3-bind-scale meta.scales.y 'y')
+        radius=15
+        fill='#E4E4E4'
+      }}
+      {{e3-shape/rectangle collectionContext
+        data=item
+        x=(e3-bind-scale meta.scales.x 'x')
+        y=(e3-bind-scale meta.scales.y 'y')
+        width=10
+        height=10
+        fill='#E4E4E4'
+      }}
+    {{else}}
+      {{e3-shape/rectangle collectionContext
+        data=item
+        x=(e3-bind-scale meta.scales.x 'x')
+        y=(e3-bind-scale meta.scales.y 'y')
+        width=10
+        height=10
+        fill='#E4E4E4'
+      }}
+    {{/if}}
   {{/e3-collection}}
 
   {{!-- {{#each model key='id' as |item|}}
