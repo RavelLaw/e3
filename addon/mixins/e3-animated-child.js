@@ -1,7 +1,5 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
-import interpolate from '../utils/e3-interpolate';
-import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
 const {get, set, copy, tryInvoke, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
 

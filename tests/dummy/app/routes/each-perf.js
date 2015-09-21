@@ -11,15 +11,15 @@ function generate(x = 100) {
   }
 
   return res;
-};
+}
 
 export default Ember.Route.extend({
   actions: {
     change() {
-      this.controller.set('model', generate(2))
+      this.controller.set('model', generate(2));
     },
     change2() {
-      this.controller.set('model', generate(3))
+      this.controller.set('model', generate(3));
     },
     togglePaddeder() {
       this.controller.set('yScalePadding', Math.random()*0.5);

@@ -21,7 +21,7 @@ export function getPercentComplete(startTime, currentTime, totalDuration = 200, 
   }
 
   return max(0, min(1, currentDuration / totalDuration));
-};
+}
 
 export default function e3Easing(type) {
   return EASING[type] || EASING.linear;

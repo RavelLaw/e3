@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const {guidFor, get} = Ember;
+const {guidFor} = Ember;
 const {keys} = Object;
 
 export default function e3CalculateChanges(previousArr, newArr) {

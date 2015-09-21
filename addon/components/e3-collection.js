@@ -2,9 +2,6 @@ import Ember from 'ember';
 import layout from '../templates/components/e3-collection';
 import Renderable from '../utils/shadow/renderable';
 import calculateChanges from '../utils/e3-calculate-changes';
-// import interpolate from '../utils/e3-interpolate';
-// import getEasingFunction, {getPercentComplete} from '../utils/e3-easing';
-
 const {keys} = Object;
 const {
   get, set, computed, guidFor,
@@ -54,7 +51,7 @@ let e3Collection = Ember.Component.extend({
     this.queueProcessing();
   },
 
-  unregister(component) {
+  unregister(/*component*/) {
     // TODO: Make this work.
     // let guid = guidFor(component);
     // let children = get(this, 'children');
@@ -98,7 +95,6 @@ let e3Collection = Ember.Component.extend({
     let itemKey = this.getAttr('key');
     let components = get(this, 'components');
     let type = this.getType();
-    let context = get(this, '_e3Context');
 
     let iterableGuids = [];
     let iterableMap = Object.create(null);

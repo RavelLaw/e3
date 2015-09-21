@@ -7,6 +7,7 @@ module('Unit | Utility | e3 calculate changes');
 test('compare empty arrays', function(assert) {
   let result = e3CalculateChanges([], []);
   assert.deepEqual(result, {
+    active: [],
     enter: [],
     exit: [],
     update: []
@@ -19,6 +20,7 @@ test('changes with one object', function(assert) {
 
   result = e3CalculateChanges([], [obj]);
   assert.deepEqual(result, {
+    active: [obj],
     enter: [obj],
     exit: [],
     update: []
@@ -26,6 +28,7 @@ test('changes with one object', function(assert) {
 
   result = e3CalculateChanges([obj], [obj]);
   assert.deepEqual(result, {
+    active: [obj],
     enter: [],
     exit: [],
     update: [obj]
@@ -33,33 +36,9 @@ test('changes with one object', function(assert) {
 
   result = e3CalculateChanges([obj], []);
   assert.deepEqual(result, {
+    active: [],
     enter: [],
     exit: [obj],
-    update: []
-  });
-});
-
-test('changes with object key', function(assert) {
-  let result;
-
-  result = e3CalculateChanges([], [{x: 1}], 'x');
-  assert.deepEqual(result, {
-    enter: [{x: 1}],
-    exit: [],
-    update: []
-  });
-
-  result = e3CalculateChanges([{x: 1}], [{x: 1}], 'x');
-  assert.deepEqual(result, {
-    enter: [],
-    exit: [],
-    update: [{x: 1}]
-  });
-
-  result = e3CalculateChanges([{x: 1}], [], 'x');
-  assert.deepEqual(result, {
-    enter: [],
-    exit: [{x: 1}],
     update: []
   });
 });
@@ -72,6 +51,7 @@ test('changes with multiple objects', function(assert) {
 
   result = e3CalculateChanges([], [objA, objB, objC]);
   assert.deepEqual(result, {
+    active: [objA, objB, objC],
     enter: [objA, objB, objC],
     exit: [],
     update: []
@@ -79,6 +59,7 @@ test('changes with multiple objects', function(assert) {
 
   result = e3CalculateChanges([objA, objB, objC], []);
   assert.deepEqual(result, {
+    active: [],
     enter: [],
     exit: [objA, objB, objC],
     update: []
@@ -86,6 +67,7 @@ test('changes with multiple objects', function(assert) {
 
   result = e3CalculateChanges([objA, objB, objC], [objA, objB, objC]);
   assert.deepEqual(result, {
+    active: [objA, objB, objC],
     enter: [],
     exit: [],
     update: [objA, objB, objC]
@@ -93,6 +75,7 @@ test('changes with multiple objects', function(assert) {
 
   result = e3CalculateChanges([objA, objB], [objB, objC]);
   assert.deepEqual(result, {
+    active: [objB, objC],
     enter: [objC],
     exit: [objA],
     update: [objB]
