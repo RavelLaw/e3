@@ -37,6 +37,11 @@ let e3Collection = Ember.Component.extend({
   },
 
   /*
+   Prevent the child from doing any actual rendering.
+   */
+  animateTo() {},
+
+  /*
    When registering a child, this is an indication that we have a component that
    should be created for each of the items in the array.
    */
@@ -51,12 +56,18 @@ let e3Collection = Ember.Component.extend({
     this.queueProcessing();
   },
 
-  unregister(/*component*/) {
-    // TODO: Make this work.
-    // let guid = guidFor(component);
-    // let children = get(this, 'children');
-    // delete children[guid];
-    this.queueProcessing();
+  childWillDestroy(component) {
+    let components = get(this, 'components');
+    let guid = guidFor(component);
+    let {children} = components[guid];
+    delete components[guid];
+
+    keys(children).forEach(key => {
+      let pseudoComponent = children[key];
+      this.removePseudoComponent(component, pseudoComponent);
+    });
+
+    return true;
   },
 
   didUpdateAttrs(attrs) {
@@ -71,6 +82,7 @@ let e3Collection = Ember.Component.extend({
 
   childDidUpdateAttrs() {
     this.queueProcessing();
+    return true;
   },
 
   registerPseudoComponent(pseudoComponent) {
@@ -94,7 +106,6 @@ let e3Collection = Ember.Component.extend({
     let iterable = this.getAttr('iterable');
     let itemKey = this.getAttr('key');
     let components = get(this, 'components');
-    let type = this.getType();
 
     let iterableGuids = [];
     let iterableMap = Object.create(null);
@@ -108,49 +119,51 @@ let e3Collection = Ember.Component.extend({
 
     // For each of the components, perform operations on enter/exit/active
     keys(components).forEach(key => {
-      let {component, children, dataState} = components[key];
-      let {enter, exit, active} = calculateChanges(dataState, iterableGuids);
-      components[key].dataState = active;
+      let component = components[key];
+      this.processIterableComponent(component, iterableGuids, iterableMap);
+    });
+  },
 
-      // For the new items, create a shadow object.
-      enter.forEach(guid => {
-        let data = iterableMap[guid];
-        let enterState = component.generateState('enterState', data);
+  /*
+   Given one of the descendant components, process the changes given the
+   */
+  processIterableComponent(componentItem, iterableGuids, iterableMap) {
+    let {component, children, dataState} = componentItem;
+    let {enter, exit, active} = calculateChanges(dataState, iterableGuids);
+    let type = this.getType();
+    componentItem.dataState = active;
 
-        // Save this shadow as a child.
-        let pseudoComponent = {
-          _previousState: enterState,
-          lastData: data,
-          guid: guid,
-          shadow: this.generateShadowObject(component, type, enterState)
-        };
+    // For the new items, create a shadow object.
+    enter.forEach(guid => {
+      let data = iterableMap[guid];
+      let enterState = component.generateState('enterState', data);
 
-        children[guid] = pseudoComponent;
-        this.registerPseudoComponent(pseudoComponent);
-      });
+      // Save this shadow as a child.
+      let pseudoComponent = {
+        _previousState: enterState,
+        lastData: data,
+        guid: guid,
+        shadow: this.generateShadowObject(component, type, enterState)
+      };
 
-      // For the leaving items, animate them out.
-      exit.forEach(guid => {
-        let pseudoComponent = children[guid];
-        let data = pseudoComponent.lastData;
-        let exitState = component.generateState('exitState', data);
-        let animation = component.generateAnimationState(data);
+      children[guid] = pseudoComponent;
+      this.registerPseudoComponent(pseudoComponent);
+    });
 
-        this.triggerAnimateTo(pseudoComponent, exitState, animation, () => {
-          this.unregisterPseudoComponent(pseudoComponent);
-          pseudoComponent.shadow.destroy();
-          delete children[guid];
-        });
-      });
+    // For the leaving items, animate them out.
+    exit.forEach(guid => {
+      let pseudoComponent = children[guid];
+      delete children[guid];
+      this.removePseudoComponent(component, pseudoComponent);
+    });
 
-      active.forEach(guid => {
-        let data = iterableMap[guid];
-        let child = children[guid];
-        let activeState = component.generateState('activeState', data);
-        let animation = component.generateAnimationState(data);
-        child.lastData = data;
-        this.triggerAnimateTo(child, activeState, animation);
-      });
+    active.forEach(guid => {
+      let data = iterableMap[guid];
+      let child = children[guid];
+      let activeState = component.generateState('activeState', data);
+      let animation = component.generateAnimationState(data);
+      child.lastData = data;
+      this.triggerAnimateTo(child, activeState, animation);
     });
   },
 
@@ -158,8 +171,20 @@ let e3Collection = Ember.Component.extend({
     this.getAttr('_e3Context').animateTo(pseudoComponent, resultState, animation, finishedCallback);
   },
 
+  /*
+   Hook to animate out a pseudo compoennt
+   */
+  removePseudoComponent(component, pseudoComponent) {
+    let data = pseudoComponent.lastData;
+    let exitState = component.generateState('exitState', data);
+    let animation = component.generateAnimationState(data);
 
-  // Then we'll need to handle this stuff, but for an array of items.
+    this.triggerAnimateTo(pseudoComponent, exitState, animation, () => {
+      this.unregisterPseudoComponent(pseudoComponent);
+      pseudoComponent.shadow.destroy();
+    });
+  },
+
   /*
    Generate the shadow object.
    */

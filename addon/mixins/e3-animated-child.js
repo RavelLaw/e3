@@ -183,6 +183,11 @@ export default Ember.Mixin.create(e3Child, {
     let shadow = get(this, 'shadow');
     let context = this.getAttr('_e3Context');
 
+    // Let the parent attempt to handle this first.
+    if(tryInvoke(get(this, '_e3Context'), 'childWillDestroy', [this])) {
+      return;
+    }
+
     if(!shadow) {
       return;
     }
