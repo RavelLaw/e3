@@ -171,6 +171,7 @@ export default Ember.Mixin.create(e3Child, {
 
     // Only render if the state is a truthy value.
     if(resultState) {
+      get(this, 'shadow').setData(this.getAttr('data'));
       this.triggerAnimateTo(resultState);
     }
   },

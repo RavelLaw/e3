@@ -44,6 +44,7 @@ export default Ember.Mixin.create({
    */
   generateShadowObject(contextType, attrs) {
     let shadow = new Renderable(this, get(this, 'shadowType'), contextType, attrs);
+    shadow.setData(this.getAttr('data'));
     set(this, 'shadow', shadow);
   },
 

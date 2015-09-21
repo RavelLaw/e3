@@ -138,7 +138,7 @@ export default Ember.Component.extend(renderQueue, meta, {
       // Dispatch the events.
       events.forEach(ev => {
         let {type, target} = ev;
-        tryInvoke(target.component, type, [event]);
+        tryInvoke(target.component, type, [event, target.data]);
       });
 
       // Then, set this event as the previous one.

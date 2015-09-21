@@ -143,7 +143,7 @@ let e3Collection = Ember.Component.extend({
         _previousState: enterState,
         lastData: data,
         guid: guid,
-        shadow: this.generateShadowObject(component, type, enterState)
+        shadow: this.generateShadowObject(component, type, enterState, data)
       };
 
       children[guid] = pseudoComponent;
@@ -163,6 +163,7 @@ let e3Collection = Ember.Component.extend({
       let activeState = component.generateState('activeState', data);
       let animation = component.generateAnimationState(data);
       child.lastData = data;
+      child.shadow.setData(data);
       this.triggerAnimateTo(child, activeState, animation);
     });
   },
@@ -188,8 +189,10 @@ let e3Collection = Ember.Component.extend({
   /*
    Generate the shadow object.
    */
-  generateShadowObject(component, contextType, attrs) {
-    return new Renderable(component, get(component, 'shadowType'), contextType, attrs);
+  generateShadowObject(component, contextType, attrs, data) {
+    let shadow = new Renderable(component, get(component, 'shadowType'), contextType, attrs);
+    shadow.setData(data);
+    return shadow;
   },
 
   /*
