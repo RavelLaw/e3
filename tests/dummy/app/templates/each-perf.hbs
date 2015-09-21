@@ -21,19 +21,11 @@
 
   {{#e3-collection ctx model key='id' as |collectionContext item|}}
     {{#if showCircles}}
-      {{e3-shape/circle collectionContext
+      {{click-circle collectionContext
         data=item
         x=(e3-bind-scale meta.scales.x 'x')
         y=(e3-bind-scale meta.scales.y 'y')
         radius=15
-        fill='#E4E4E4'
-      }}
-      {{e3-shape/rectangle collectionContext
-        data=item
-        x=(e3-bind-scale meta.scales.x 'x')
-        y=(e3-bind-scale meta.scales.y 'y')
-        width=10
-        height=10
         fill='#E4E4E4'
       }}
     {{else}}

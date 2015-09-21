@@ -16,10 +16,10 @@ function generate(x = 100) {
 export default Ember.Route.extend({
   actions: {
     change() {
-      this.controller.set('model', generate(2));
+      this.controller.set('model', generate(200));
     },
     change2() {
-      this.controller.set('model', generate(3));
+      this.controller.set('model', generate(300));
     },
     togglePaddeder() {
       this.controller.set('yScalePadding', Math.random()*0.5);
@@ -29,7 +29,7 @@ export default Ember.Route.extend({
     }
   },
   model() {
-    return generate(5);
+    return generate(500);
   },
   setupController(controller) {
     controller.set('yScalePadding', 0);
