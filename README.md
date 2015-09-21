@@ -10,6 +10,10 @@ It borrows heavily from D3 for the math-behind-the-magic, but adheres to the mor
 
 Please note that this is in a *very early* beta (alpha?) stage and that the API should not be considered stable...or always functioning. We're not quite feature complete and the first few iterations will try to address that. (See TODO.md for status). I would not yet consider this production ready.
 
+## Introduction to E3
+
+[![Introduction to E3 on Global Ember Meetup](https://i.vimeocdn.com/video/535975310_1920x1080.jpg)](https://vimeo.com/139890520)
+
 ## Installation
 Should be as easy as pie:
 
