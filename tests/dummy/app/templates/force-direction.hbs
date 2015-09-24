@@ -1,0 +1,28 @@
+<h2 class="title">Force Direction (in progress)</h2>
+<br><br>
+{{#e3-container type='svg' height=400 width=800 as |ctx meta|}}
+  <metadata>
+    {{e3-scale/linear ctx 'x'
+      domain=(e3-extent model key='value' padding=0.2 min-delta=5)
+      range=ctx.horizontalRange
+    }}
+    {{e3-scale/linear ctx 'y'
+      domain=(e3-extent model key='temperature' padding=0.3 min-delta=5)
+      range=ctx.verticalRange
+    }}
+
+    {{e3-layout/identity ctx 'identity'
+      data=model
+      x=(e3-bind-scale meta.scales.x 'value')
+      y=(e3-bind-scale meta.scales.y 'temperature')
+    }}
+  </metadata>
+
+  {{#each model as |data|}}
+    {{e3-shape/circle ctx
+      data=data
+      x=(e3-bind-layout meta.layouts.identity 'x')
+      y=(e3-bind-layout meta.layouts.identity 'y')
+    }}
+  {{/each}}
+{{/e3-container}}

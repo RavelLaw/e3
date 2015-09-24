@@ -48,9 +48,9 @@
   - [ ] Stacked Area
 - [X] Transition Enter State with Previous Scale
   - [X] How to handle Ordinal Scales where value didn't exist previously? (closest index?)
-- [ ] Add Animation Easing Functions
-  - [ ] Basic Quad Easing
-  - [ ] Elastic Easing
-  - [ ] Linear Easing
+- [X] Add Animation Easing Functions
+  - [X] Basic Quad Easing
+  - [X] Elastic Easing
+  - [X] Linear Easing
 - [ ] Auto Height/Width options for
 - [ ] Canvas High DPI: http://www.html5rocks.com/en/tutorials/canvas/hidpi/

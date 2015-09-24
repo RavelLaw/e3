@@ -16,6 +16,7 @@ Router.map(function() {
   this.route('grouped-bars');
   this.route('invert');
   this.route('nytimes-strikeouts');
+  this.route('force-direction');
 });
 
 export default Router;

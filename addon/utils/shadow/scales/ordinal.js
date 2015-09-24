@@ -48,7 +48,7 @@ export default function shadowScalesOrdinal(range = [0,1], domain = [0,1], optio
   }
 
   // Create the lookup map.
-  let map = {};
+  let map = Object.create(null);
   let stepSpacing = (spaceBetween / max(1, (bands - 1)));
 
   // Create a lookup in the map for each item in the domain.
