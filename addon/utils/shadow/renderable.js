@@ -91,6 +91,11 @@ Renderable.prototype = {
   attrs: null,
 
   /*
+   An unopinionated object that will be passed when an event is triggered for this renderable.
+   */
+  data: null,
+
+  /*
    A flag that tracks wether the current attributes have been rendered
    */
   attrsAreDirty: true,
@@ -107,6 +112,13 @@ Renderable.prototype = {
     this.attrsAreDirty = true;
     // No side effects plz!
     this.attrs = copy(attrs);
+  },
+
+  /*
+   Set the current "data" of the
+   */
+  setData(data) {
+    this.data = data;
   },
 
   /*

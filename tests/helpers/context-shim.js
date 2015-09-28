@@ -14,6 +14,9 @@ export default function() {
     },
     removeMeta() {
       return true;
+    },
+    animateTo() {
+      return true;
     }
   };
 }

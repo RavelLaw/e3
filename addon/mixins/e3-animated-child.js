@@ -1,10 +1,8 @@
 import Ember from 'ember';
 import e3Child from './e3-child';
-import interpolate from '../utils/e3-interpolate';
-import getEasingFunction from '../utils/e3-easing';
-const {get, set, copy, run: {scheduleOnce}} = Ember;
+const {get, set, copy, tryInvoke, run: {scheduleOnce}} = Ember;
 const {keys} = Object;
-const {max, min} = Math;
+
 
 export default Ember.Mixin.create(e3Child, {
   /*
@@ -65,10 +63,10 @@ export default Ember.Mixin.create(e3Child, {
   /*
    Apply the current state to the animation hash.
    */
-  generateAnimationState() {
+  generateAnimationState(dataContext = null) {
     let animation = get(this, 'animation');
     let attrs = get(this, 'attrs');
-    let data = this.getAttr('data');
+    let data = dataContext || this.getAttr('data');
     let resultState = {};
 
     if(!animation) {
@@ -89,10 +87,10 @@ export default Ember.Mixin.create(e3Child, {
 
    Also, if there was an attribute set with the same name directly, use that instead.
    */
-  generateState(stateName) {
+  generateState(stateName, dataContext = null) {
     let activeState = get(this, 'activeState');
 
-    let data = this.getDataContext();
+    let data = dataContext || this.getDataContext();
     let attrs = this.get('attrs');
     let resultState = {};
     let requiredKeys = keys(activeState).concat(keys(attrs));
@@ -154,13 +152,6 @@ export default Ember.Mixin.create(e3Child, {
   },
 
   /*
-   Hook to start an animation of this object.
-   */
-  animateWithContext(callback) {
-    this.getAttr('_e3Context').addToQueue(callback);
-  },
-
-  /*
    Whenever the did render hook runs, start an animation to update the shadow object.
    TODO: Make sure we handle animation interruptions.
    */
@@ -168,6 +159,8 @@ export default Ember.Mixin.create(e3Child, {
     if(get(this, 'hasRendered') || this.setupInitialState()) {
       scheduleOnce('afterRender', this, 'doRenderNewState');
     }
+
+    tryInvoke(get(this, '_e3Context'), 'childDidUpdateAttrs');
   },
 
   /*
@@ -178,7 +171,8 @@ export default Ember.Mixin.create(e3Child, {
 
     // Only render if the state is a truthy value.
     if(resultState) {
-      this.renderState(resultState);
+      get(this, 'shadow').setData(this.getAttr('data'));
+      this.triggerAnimateTo(resultState);
     }
   },
 
@@ -190,12 +184,17 @@ export default Ember.Mixin.create(e3Child, {
     let shadow = get(this, 'shadow');
     let context = this.getAttr('_e3Context');
 
+    // Let the parent attempt to handle this first.
+    if(tryInvoke(get(this, '_e3Context'), 'childWillDestroy', [this])) {
+      return;
+    }
+
     if(!shadow) {
       return;
     }
 
     if(resultState) {
-      this.renderState(resultState, () => {
+      this.triggerAnimateTo(resultState, () => {
         context.unregister(this);
         shadow.destroy();
       });
@@ -208,43 +207,9 @@ export default Ember.Mixin.create(e3Child, {
   /*
    Render State
    */
-  renderState(resultState, finishedCallback) {
-    let startState = get(this, '_previousState');
+  triggerAnimateTo(resultState, finishedCallback) {
     let animation = this.generateAnimationState();
-    let ease = getEasingFunction(animation.ease);
-    let start = null;
-
-    // Start an animation.
-    this.animateWithContext(time => {
-      if(start === null) {
-        start = time;
-      }
-
-      // Get the overall percent complete.
-      let percentComplete = getPercentComplete(start, time, animation.duration, animation.delay);
-
-      // Get the "eased" percent complete.
-      let easePercent = ease(percentComplete);
-
-      // Interpolate the current state
-      let currentState = interpolate(startState, resultState, easePercent);
-
-      // Save this current state.
-      this._previousState = currentState;
-
-      // Then, lastly, apply the attributes to the shadow object.
-      this.updateShadowObject(currentState);
-
-      // If we're done, let the animation queue know.
-      if(percentComplete >= 1) {
-        if(finishedCallback) {
-          finishedCallback(this);
-        }
-        return true;
-      } else {
-        return false;
-      }
-    });
+    this.getAttr('_e3Context').animateTo(this, resultState, animation, finishedCallback);
   },
 
   /*
@@ -270,17 +235,3 @@ export default Ember.Mixin.create(e3Child, {
     this._super();
   }
 });
-
-/*
- Calculate the percentage complete based on the times/delays.
- */
-function getPercentComplete(startTime, currentTime, totalDuration = 200, delay = 0) {
-  let currentDuration = currentTime - delay - startTime;
-
-  // This should only happen if there's a delay.
-  if(currentDuration < 0) {
-    return 0;
-  }
-
-  return max(0, min(1, currentDuration / totalDuration));
-}

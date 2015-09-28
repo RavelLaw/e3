@@ -1,7 +1,3 @@
-<p>
-  PLEASE NOTE: We're aware of some of the performance issues on this type of chart; we're
-  working to fix those, but this still serves as a good proof-of-concept.
-</p>
 <select name="teams" onchange={{action 'pickTeam'}}>
   <option value="">Choose...</option>
   {{#each model.teams as |team|}}
@@ -65,15 +61,15 @@
 
   {{!-- Grey Background Distribution Dots --}}
   {{#e3-group ctx as |groupCtx|}}
-    {{#each model.outs as |out|}}
-      {{e3-shape/circle groupCtx
+    {{#e3-collection groupCtx model.outs as |collectionCtx out|}}
+      {{e3-shape/circle collectionCtx
         data=out
         x=(e3-bind-scale meta.scales.x 'year')
         y=(e3-bind-scale meta.scales.y 'kpg')
         radius=3
         fill='#E4E4E4'
       }}
-    {{/each}}
+    {{/e3-collection}}
   {{/e3-group}}
 
   {{!-- Blue Average Line --}}
